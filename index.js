@@ -1,7 +1,10 @@
 const https = require('https');
 const express = require('express');
 
-let app = express();
+
+let app = require('express')();
+//haha javascript is broken 
+
 let port = process.env.PORT || '4202';
 let host = process.env.HOST || 'http://localhost';
 

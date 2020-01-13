@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/user2745/pi-server#readme",
   "dependencies": {
+    "@google/maps": "^1.0.2",
     "express": "^4.17.1",
     "mocha": "^6.2.0"
   },
