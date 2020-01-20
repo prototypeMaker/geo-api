@@ -3,39 +3,49 @@ const http = require('http');
 const Express = require('express');
 const GoogleMaps = require('@google/maps');
 
+
 // Class Declaration
 class GeoLocation
 {
     
-    constructor(ip, token, callback )
+    constructor(ip, token, )
     {
         this.token = token || process.env.IPSTACK_ACCESSKEY;
         this.ip  = ip || `66.115.169.224`;
         this.Payload = {};
+        this._updateLocation((returnValue, error) => {this.Payload = returnValue})
+        
     }
-
-    _updateLocation = async () => 
+    
+    _updateLocation = async (callback) => 
     {
-        const url = `http://api.ipstack.com/${this.IP}?access_key=${this.API}&formate=1`
+        var returnValue = new String();
+        http.get(
+            {
+                hostname: 'api.ipstack.com',
+                port: 80,
+                path: `/${this.ip}?access_key=${this.token}`,
+                agent: false  
+            }, (res) => 
+            {
+                res.on('data', data => { returnValue += data })
+                res.on('end', () => { callback(JSON.parse(returnValue), null) })
+                res.on('error', (err) => { if (err) throw new Error(`[Console] Something Broke -- ${err}`)})
+            })
 
-        useCallback(
-            () => {
-                callback
-            },
-            [input],
-        )
+            // return returnValue;
     }
-
+        
     get lat() 
     {
-        return ;
+        return this.Payload.latitude;
     }
-
+    
     get long()
     {
-        return ;
+        return this.Payload.longitude;
     }
+
 }
 
-const Pi = new GeoLocation();
-Pi._updateLocation();
+module.exports = GeoLocation;
