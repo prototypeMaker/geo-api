@@ -1,16 +1,13 @@
 const https = require('https');
 const express = require('express');
-
-
-let app = require('express')();
-//haha javascript is broken 
+let app = express();
 
 let port = process.env.PORT || '4202';
 let host = process.env.HOST || 'http://localhost';
 
 app.listen(port, error => {
   console.log(`[SERVER] Live on ${host}:${port}`);
-  domainUpdate();
+  RecieveJson();
   if (error) throw new Error(error);
 });
 
@@ -42,4 +39,19 @@ function domainUpdate() {
   req.end();
 }
 
+function RecieveJson()
+{
+  let IP =  `127.0.0.1`
+  let IPSTACK_ACCESSKEY = process.env.IPSTACK_ACCESSKEY;
+  let url = `http://api.ipstack.com/${IP}?access_key=${IPSTACK_ACCESSKEY}`
+}
+
 module.exports = app;
+
+
+// Reference 
+// https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
+
+// Rewritten in the OOJS style
+
+
