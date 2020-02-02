@@ -1,20 +1,52 @@
 // Import Statements
 const http = require('http');
-const Express = require('express');
-const GoogleMaps = require('@google/maps');
+const FS = require('fs');
 
 
 // Class Declaration
 class GeoLocation
 {
     
-    constructor(ip, token, )
+    constructor(ip, token)
     {
         this.token = token || process.env.IPSTACK_ACCESSKEY;
-        this.ip  = ip || `66.115.169.224`;
-        this.Payload = {};
-        this._updateLocation((returnValue, error) => {this.Payload = returnValue})
-        
+        this.ip  = ip || `66.115.169.224`; //test IP
+        this.GeoIP = null;
+
+        this._updateLocation((error) =>
+        {
+            if (error)
+            {
+                return new Error(`[Console] Attempted to Update Location \n*******\n`)
+            }
+            this.setGeoIP(returnValue);
+        })
+
+
+    }
+    get getLat() 
+    {
+        return this.GeoIP.latitude;
+    }
+    
+    get getLong()
+    {
+        return this.GeoIP.longitude;
+    }
+
+    setLat()
+    {
+
+    }
+
+    setGeoIP(newValue)
+    {
+        this.GeoIP = newValue;
+    }
+
+    getGeoIP()
+    {
+        return this.GeoIP;
     }
     
     _updateLocation = async (callback) => 
@@ -29,23 +61,26 @@ class GeoLocation
             }, (res) => 
             {
                 res.on('data', data => { returnValue += data })
-                res.on('end', () => { callback(JSON.parse(returnValue), null) })
-                res.on('error', (err) => { if (err) throw new Error(`[Console] Something Broke -- ${err}`)})
+
+                res.on('end', () => {
+                    returnValue = JSON.parse(returnValue, null, 4);
+                    callback(returnValue, null);
+                })
+                res.on('error', (err) => { if (err) throw new Error(`[Console] Unable to recieve resource: -- ${err}`); callback(null, err);})
             })
 
             // return returnValue;
     }
-        
-    get lat() 
-    {
-        return this.Payload.latitude;
-    }
     
-    get long()
+
+    saveToFile(jsonName, rawData)
     {
-        return this.Payload.longitude;
+        let saveData = JSON.stringify(rawData);
+        jsonName = jsonName + ".json";
+
+        console.log(`[Console] saving '${jsonName}' to file\n`);
+        FS.writeFileSync(jsonName, saveData);
+        console.log(`...[Console] file saved.\n`)
     }
-
 }
-
 module.exports = GeoLocation;
