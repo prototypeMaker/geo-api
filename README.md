@@ -1,4 +1,4 @@
-RpiWS 
+RpiWS
 
 Geolocation API built with NodeJs
 

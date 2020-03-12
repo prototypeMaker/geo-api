@@ -13,16 +13,7 @@ class GeoLocation
         this.ip  = ip || `66.115.169.224`; //test IP
         this.GeoIP = null;
         console.timeStamp("Starting Gelolocatoin api")
-        this._updateLocation((error) =>
-        {
-            if (error)
-            {
-                return new Error(`[Console] Attempted to Update Location \n*******\n`)
-            }
-            this.setGeoIP(returnValue);
-            this.getGeoIP()
-        })
-
+        this._updateLocation();
 
     }
     get getLat() 
@@ -42,10 +33,10 @@ class GeoLocation
 
     }
 
-    setGeoIP(newValue)
+    setAPIJson(newValue)
     {
         this.GeoIP = newValue;
-        console.log(`SetGeoIP: ${this.GeoIP}`)
+        console.log(this.GeoIP)
     }
 
     getGeoIP()
@@ -53,7 +44,7 @@ class GeoLocation
         return this.GeoIP;
     }
     
-    _updateLocation = async (callback) => 
+    _updateLocation = async () => 
     {
         var returnValue = new String();
 
@@ -70,8 +61,7 @@ class GeoLocation
     
                     res.on('end', () => {
                         returnValue = JSON.parse(returnValue, null, 4);
-                        console.log(returnValue);
-                        callback(returnValue, null);
+                        this.setAPIJson(returnValue);
                     })
                     res.on('error', (err) => { if (err) throw new Error(`[Console] Unable to recieve resource: -- ${err}`); callback(null, err);})
                 })
