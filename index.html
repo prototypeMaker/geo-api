@@ -3,27 +3,50 @@
 
 <head class="background">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0 shrink-to-fit=no" />
-	<title>Xi</title>
+	<title>Where in the World ?</title>
 	<link rel="icon" type="img/ico" href="./assets/images/icon.ico">
 </head>
 
-<body>
+<body >
 	<!-- Background -->
-	<header class="background inline">
-		<div class="container d-flex h-100 align-items-center">
-			<div class="mx-auto text-center">
+	<!-- <header class="background inline"> -->
+		<!-- <div class="container d-flex h-100 align-items-center"> -->
+			<!-- <div class="mx-auto text-center"> -->
 				<!-- <h1 class="mx-auto my-0 text-uppercase text-white">Trésor</h1> -->
-				<img src="./assets/images/tresor-xi.png" height="240px" width="240px" />
+				<!-- <img src="./assets/images/tresor-xi.png" height="240px" width="240px" /> -->
 				<!-- <h5 class="mx-auto text-danger ">Créer et Redéfinir</h5> -->
-			</div>
-		</div>
-	</header>
+			<!-- </div> -->
+		<!-- </div> -->
+	<!-- </header> -->
+
+	<div id="map"></div>
 
 	<!-- CSS Section -->
+	<link rel="stylesheet" href="./assets/css/default.css">
+	
+	<!-- Maps Region -->
+	<style> #map {height: 100%; width: 100%;} /*Maximize the size of the map*/</style>
+	
+	<script> function initMap() 
+	{
+		// Pi Location
+		let pi = {lat: 36.214151845703125, lng: -81.67890930175781};
+		let html = document.getElementById('map');
+		// Map
+		let map = new google.maps.Map(html, {zoom: 20, center: pi})
+		// Pi specific marker
+		let marker = new google.maps.Marker({position: pi, map: map,})
+	} </script>
 
-	<link rel="stylesheet" href="./assets/css/default.css"
-	>
+	<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOp-cWrvy178Pcjq-hVYnQ4RdwyHQMu9g&callback=initMap">
+	</script>
+
+	<!-- End Maps Region -->
+
 	<!--Javascript & Jquery Section-->
+
+
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
 	</script>
