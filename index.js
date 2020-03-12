@@ -11,7 +11,6 @@ let Pi = new Geolocation('152.10.249.31');
 app.listen(port, error => {
   console.log(`[SERVER] Live on ${host}:${port}`);
   if (error) throw new Error(`[Console] Error on \n*******\n`);
-
 });
 
 // render files

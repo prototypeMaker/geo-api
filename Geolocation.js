@@ -12,7 +12,7 @@ class GeoLocation
         this.token = token || process.env.IPSTACK_ACCESSKEY;
         this.ip  = ip || `66.115.169.224`; //test IP
         this.GeoIP = null;
-
+        console.timeStamp("Starting Gelolocatoin api")
         this._updateLocation((error) =>
         {
             if (error)
@@ -20,17 +20,20 @@ class GeoLocation
                 return new Error(`[Console] Attempted to Update Location \n*******\n`)
             }
             this.setGeoIP(returnValue);
+            this.getGeoIP()
         })
 
 
     }
     get getLat() 
     {
+        console.timeStamp(`Get Lat: ${this.GeoIP}`)
         return this.GeoIP.latitude;
     }
     
     get getLong()
     {
+        console.log(`Get GeoIP: ${this.GeoIP}`)
         return this.GeoIP.longitude;
     }
 
@@ -42,6 +45,7 @@ class GeoLocation
     setGeoIP(newValue)
     {
         this.GeoIP = newValue;
+        console.log(`SetGeoIP: ${this.GeoIP}`)
     }
 
     getGeoIP()
@@ -52,24 +56,26 @@ class GeoLocation
     _updateLocation = async (callback) => 
     {
         var returnValue = new String();
-        http.get(
-            {
-                hostname: 'api.ipstack.com',
-                port: 80,
-                path: `/${this.ip}?access_key=${this.token}`,
-                agent: false  
-            }, (res) => 
-            {
-                res.on('data', data => { returnValue += data })
 
-                res.on('end', () => {
-                    returnValue = JSON.parse(returnValue, null, 4);
-                    callback(returnValue, null);
+
+            http.get(
+                {
+                    hostname: 'api.ipstack.com',
+                    port: 80,
+                    path: `/${this.ip}?access_key=${this.token}`,
+                    agent: false  
+                }, (res) => 
+                {
+                    res.on('data', data => { returnValue += data })
+    
+                    res.on('end', () => {
+                        returnValue = JSON.parse(returnValue, null, 4);
+                        console.log(returnValue);
+                        callback(returnValue, null);
+                    })
+                    res.on('error', (err) => { if (err) throw new Error(`[Console] Unable to recieve resource: -- ${err}`); callback(null, err);})
                 })
-                res.on('error', (err) => { if (err) throw new Error(`[Console] Unable to recieve resource: -- ${err}`); callback(null, err);})
-            })
-
-            // return returnValue;
+            
     }
     
 
