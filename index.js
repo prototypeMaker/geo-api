@@ -8,6 +8,11 @@ let host = process.env.HOST || 'http://localhost';
 
 let Pi = new Geolocation('152.10.249.31');
 
+setTimeout(() => {
+  console.log(`${JSON.stringify(Pi.getGeoIP(), null, 4)}`)
+}, 5000);
+
+
 app.listen(port, error => {
   console.log(`[SERVER] Live on ${host}:${port}`);
   if (error) throw new Error(`[Console] Error on \n*******\n`);

@@ -16,15 +16,15 @@ class GeoLocation
         this._updateLocation();
 
     }
-    get getLat() 
+    getLat() 
     {
-        console.timeStamp(`Get Lat: ${this.GeoIP}`)
+        console.timeStamp(`Get Lat: ${this.GeoIP.latitude}`)
         return this.GeoIP.latitude;
     }
     
-    get getLong()
+    getLong()
     {
-        console.log(`Get GeoIP: ${this.GeoIP}`)
+        console.log(`Get Longitude: ${this.GeoIP.longitude}`)
         return this.GeoIP.longitude;
     }
 
@@ -36,18 +36,17 @@ class GeoLocation
     setAPIJson(newValue)
     {
         this.GeoIP = newValue;
-        console.log(this.GeoIP)
     }
 
     getGeoIP()
     {
         return this.GeoIP;
     }
-    
+
+    // Sends HTML req to ipstack.com & saves payload to 'this.setAPIJson()'
     _updateLocation = async () => 
     {
         var returnValue = new String();
-
 
             http.get(
                 {
@@ -68,15 +67,10 @@ class GeoLocation
             
     }
     
-
-    saveToFile(jsonName, rawData)
+    showMap() 
     {
-        let saveData = JSON.stringify(rawData);
-        jsonName = jsonName + ".json";
+        // returns html chunk using google maps javascript api
 
-        console.log(`[Console] saving '${jsonName}' to file\n`);
-        FS.writeFileSync(jsonName, saveData);
-        console.log(`...[Console] file saved.\n`)
     }
 }
 module.exports = GeoLocation;
