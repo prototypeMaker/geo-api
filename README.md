@@ -2,4 +2,8 @@ RpiWS
 
 Geolocation API built with NodeJs
 
-run index.js to start a webserver
+Key Features:
+
+> View Map with Pi Location on Web Page
+> Updates every 5 minutes
+> View Map with Pi location On Mobile App
