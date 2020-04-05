@@ -9,3 +9,6 @@ Key Features:
 > Updates every 5 minutes
 
 > View Map with Pi location On Mobile App
+
+
+NOTE: This is being deprecrated & remade into its own repository
