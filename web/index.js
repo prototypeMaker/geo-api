@@ -1,6 +1,6 @@
 const https = require('https');
 const express = require('express');
-const Geolocation = require('./Geolocation');
+const Geolocation = require('../Geolocation');
 let app = express();
 
 let port = process.env.PORT || '4202';
