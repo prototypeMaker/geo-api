@@ -30,7 +30,7 @@ class GeoLocation
 
     setLat()
     {
-
+        
     }
 
     setAPIJson(newValue)
@@ -65,12 +65,6 @@ class GeoLocation
                     res.on('error', (err) => { if (err) throw new Error(`[Console] Unable to recieve resource: -- ${err}`); callback(null, err);})
                 })
             
-    }
-    
-    showMap() 
-    {
-        // returns html chunk using google maps javascript api
-
     }
 }
 module.exports = GeoLocation;
