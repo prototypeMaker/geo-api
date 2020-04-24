@@ -1,10 +1,11 @@
 {
   "name": "pi-server",
   "version": "1.0.0",
-  "description": "simple raspberry pi web server running nodejs",
+  "description": "simple geo-tracker server for IoT Systems",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "dev": "parcel index.html",
+    "build": "parcel build index.html",
     "test": "NODE_ENV=test mocha './*/*.spec.js'"
   },
   "repository": {
@@ -32,6 +33,7 @@
   },
   "test-unit": "NODE_ENV=test mocha '/**/*.spec.js'",
   "devDependencies": {
+    "parcel-bundler": "^1.12.4",
     "supertest": "^4.0.2"
   }
 }
