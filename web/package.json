@@ -4,6 +4,7 @@
   "description": "simple geo-tracker server for IoT Systems",
   "main": "index.js",
   "scripts": {
+    "start": "parcel index.html",
     "dev": "parcel index.html",
     "build": "parcel build index.html",
     "test": "NODE_ENV=test mocha './*/*.spec.js'"
@@ -34,6 +35,8 @@
   "test-unit": "NODE_ENV=test mocha '/**/*.spec.js'",
   "devDependencies": {
     "parcel-bundler": "^1.12.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "supertest": "^4.0.2"
   }
 }
