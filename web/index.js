@@ -8,7 +8,6 @@ let host = process.env.HOST || 'http://localhost';
 
 let Pi = new Geolocation('152.10.249.31');
 
-// Grabs GeoIP
 setTimeout(() => {
   console.log(`${JSON.stringify(Pi.getGeoIP(), null, 4)}`)
 }, 5000);
