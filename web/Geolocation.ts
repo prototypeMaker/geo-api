@@ -1,10 +1,10 @@
 const http = require("http");
 const FS = require("fs");
 
-class GeoLocation {
+export class GeoLocation {
   private token: string | undefined;
   private ip: string;
-  private GeoIP: any;
+  private geoIp: any;
 
   /**
    * @constructor Constructs instance of a device's GeoLocation information
@@ -14,34 +14,34 @@ class GeoLocation {
   constructor(ip: string, token: string) {
     this.token = token || process.env.IPSTACK_ACCESSKEY;
     this.ip = ip || `66.115.169.224`; //test IP
-    this.GeoIP = null;
+    this.geoIp = null;
 
     console.timeStamp("Starting GeoLocation api");
 
     this._updateLocation();
   }
 
-  getLat() {
-    console.timeStamp(`Get Lat: ${this.GeoIP.latitude}`);
-    return this.GeoIP.latitude;
+  getLat(): number {
+    console.timeStamp(`Get Lat: ${this.geoIp.latitude}`);
+    return this.geoIp.latitude;
   }
 
-  getLong() {
-    console.log(`Get Longitude: ${this.GeoIP.longitude}`);
-    return this.GeoIP.longitude;
+  getLong(): number {
+    console.log(`Get Longitude: ${this.geoIp.longitude}`);
+    return this.geoIp.longitude;
   }
-
-  setLat() {}
 
   setAPIJson(newValue: string) {
-    this.GeoIP = newValue;
+    this.geoIp = newValue;
   }
 
-  getGeoIP() {
-    return this.GeoIP;
+  getGeoIp(): number {
+    return this.geoIp;
   }
 
-  // Sends HTML req to ipstack.com & saves payload to 'this.setAPIJson()'
+  /**
+   * Sends HTML request to ipstack.com & saves payload to `this.setAPIJson()`
+   */
   _updateLocation = async () => {
     var returnValue = "";
 
@@ -69,4 +69,3 @@ class GeoLocation {
     );
   };
 }
-module.exports = GeoLocation;
