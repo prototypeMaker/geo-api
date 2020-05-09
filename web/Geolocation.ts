@@ -44,27 +44,22 @@ export class GeoLocation {
   _updateLocation = async () => {
     var returnValue = "";
 
-    http.get(
-      {
-        hostname: "api.ipstack.com",
-        port: 80,
-        path: `/${this.ip}?access_key=${this.token}`,
-        agent: false,
-      },
-      (res: any) => {
-        res.on("data", (data: any) => {
-          returnValue += data;
-        });
+    const options: http.RequestOptions = {
+      hostname: "api.ipstack.com",
+      port: 80,
+      path: `/${this.ip}?access_key=${this.token}`,
+      agent: false,
+    };
 
-        res.on("end", () => {
-          returnValue = JSON.parse(returnValue.toString());
-          this.setAPIJson(returnValue);
-        });
-        res.on("error", (err: any) => {
-          if (err)
-            throw new Error(`[Console] Unable to receive resource: -- ${err}`);
-        });
-      }
-    );
+    http.get(options, (res: http.IncomingMessage) => {
+      res.on("data", (data: any) => {
+        returnValue += data;
+      });
+
+      res.on("end", () => {
+        returnValue = JSON.parse(returnValue.toString());
+        this.setAPIJson(returnValue);
+      });
+    });
   };
 }

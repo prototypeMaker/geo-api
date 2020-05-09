@@ -1,7 +1,5 @@
 import { GeoLocation } from "./Geolocation";
-
-const https = require("https");
-const express = require("express");
+import express from "express";
 
 let app = express();
 
@@ -16,7 +14,7 @@ setTimeout(() => {
 }, 5000);
 
 app.listen(port, () => {
-  console.log(`Server listening on ${host}:${port}...`);
+  console.log(`Listening on ${host}:${port}..`);
 });
 
 // render files
