@@ -42,7 +42,7 @@ export class GeoLocation {
    * Sends HTML request to ipstack.com & saves payload to `this.setAPIJson()`
    */
   _updateLocation = async () => {
-    var returnValue = "";
+    let returnValue = "";
 
     const options: http.RequestOptions = {
       hostname: "api.ipstack.com",
