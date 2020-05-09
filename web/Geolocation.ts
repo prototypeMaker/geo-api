@@ -1,5 +1,4 @@
-const http = require("http");
-const FS = require("fs");
+import http from "http";
 
 export class GeoLocation {
   private token: string | undefined;
