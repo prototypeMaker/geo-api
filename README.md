@@ -1,5 +1,5 @@
-RpiWS
-
+RpiWS     | [![Build Status](https://travis-ci.com/IoTresor/geo-api.svg?token=7qY9qZJNNLTXG7AiwWoN)](https://travis-ci.com/IoTresor/geo-api)
+ 
 Geolocation API built with NodeJs
 
 Key Features:
