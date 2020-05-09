@@ -26,6 +26,9 @@
     <!-- CSS Section -->
     <link rel="stylesheet" href="./assets/css/default.css" />
 
+    <!-- CSS Section -->
+    <link rel="stylesheet" href="./assets/css/default.css" />
+
     <!-- Maps Region -->
     <style>
       #map {
@@ -35,11 +38,23 @@
     </style>
 
     <script>
+      function initMap() {
+        // Pi Location
+        let pi = { lat: 36.214151845703125, lng: -81.67890930175781 };
+        let html = document.getElementById('map');
+        // Map
+        let map = new google.maps.Map(html, { zoom: 20, center: pi });
+        // Pi specific marker
+        let marker = new google.maps.Marker({ position: pi, map: map });
+      }
+    </script>
+
+    <script>
       setTimeout(() => {}, 5000);
       function initMap() {
         // Pi Location
         let pi = { lat: 36.214151845703125, lng: -81.67890930175781 };
-        let html = document.getElementById("map");
+        let html = document.getElementById('map');
         // Map
         let map = new google.maps.Map(html, { zoom: 20, center: pi });
         // Pi specific marker
