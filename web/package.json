@@ -4,7 +4,7 @@
   "description": "simple raspberry pi web server running nodejs",
   "main": "index.js",
   "scripts": {
-    "start": "node build/index.js",
+    "start": "tsc && node build/index.js",
     "test": "NODE_ENV=test mocha './*/*.spec.js'",
     "tsc": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./index.ts"
