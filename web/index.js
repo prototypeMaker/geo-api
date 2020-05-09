@@ -1,6 +1,8 @@
 const https = require('https');
 const express = require('express');
 const Geolocation = require('../Geolocation');
+const reactDOM = require('react-dom');
+const Maps = require('./components/Map.jsx');
 let app = express();
 
 let port = process.env.PORT || '4202';
@@ -22,6 +24,7 @@ app.listen(port, error => {
 // render files
 app.use(express.static('.'));
 
+reactDOM.render(<Maps />, document.getElementByID('map'));
 
 
 module.exports = app;
