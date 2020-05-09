@@ -1,12 +1,12 @@
 import { GeoLocation } from "./Geolocation";
 import express from "express";
 
-let app = express();
+const app = express();
 
-let port = process.env.PORT || 4202;
-let host = process.env.HOST || "http://localhost";
+const port = process.env.PORT || 4202;
+const host = process.env.HOST || "http://localhost";
 
-let pi = new GeoLocation("152.10.249.31");
+const pi = new GeoLocation("152.10.249.31");
 
 // Grabs GeoIP
 setTimeout(() => {
