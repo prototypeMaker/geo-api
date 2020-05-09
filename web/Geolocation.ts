@@ -2,18 +2,17 @@ import http from "http";
 
 export class GeoLocation {
   private token: string | undefined;
-  private ip: string;
-  private geoIp: any;
+  private ip: string | undefined;
+  private geoIp: any = null;
 
   /**
    * @constructor Constructs instance of a device's GeoLocation information
    * @param {string} ip - The IP address of the given device
    * @param {string} token - The bearer token for authorization
    */
-  constructor(ip: string, token: string) {
+  constructor(ip?: string, token?: string) {
     this.token = token || process.env.IPSTACK_ACCESSKEY;
     this.ip = ip || `66.115.169.224`; //test IP
-    this.geoIp = null;
 
     console.timeStamp("Starting GeoLocation api");
 
