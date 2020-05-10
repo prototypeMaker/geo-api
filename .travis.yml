@@ -1,6 +1,8 @@
 language: node_js
-
+node_js:
+    - 13
 scripts: 
     - npm run test
-
+git:
+    quiet: true
 # todo -- run on github pages / heroku
