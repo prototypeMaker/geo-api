@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 4202;
 const host = process.env.HOST || 'http://localhost';
 
-const pi = new GeoLocation('152.10.249.31', 'd7b3fca89ad66271efaa93d4d483939d');
+const pi = new GeoLocation('152.10.249.31');
 
 // Grabs GeoIP
 setTimeout(() => {

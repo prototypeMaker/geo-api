@@ -52,22 +52,22 @@ var GeoLocation = /** @class */ (function () {
         /**
          * Sends HTML request to ipstack.com & saves payload to `this.setAPIJson()`
          */
-        this._updateLocation = function () { return __awaiter(_this, void 0, void 0, function () {
+        this.updateLocation = function () { return __awaiter(_this, void 0, void 0, function () {
             var returnValue, options;
             var _this = this;
             return __generator(this, function (_a) {
-                returnValue = "";
+                returnValue = '';
                 options = {
-                    hostname: "api.ipstack.com",
+                    hostname: 'api.ipstack.com',
                     port: 80,
                     path: "/" + this.ip + "?access_key=" + this.token,
-                    agent: false,
+                    agent: false
                 };
                 http_1.default.get(options, function (res) {
-                    res.on("data", function (data) {
+                    res.on('data', function (data) {
                         returnValue += data;
                     });
-                    res.on("end", function () {
+                    res.on('end', function () {
                         returnValue = JSON.parse(returnValue.toString());
                         _this.setAPIJson(returnValue);
                     });
@@ -77,8 +77,8 @@ var GeoLocation = /** @class */ (function () {
         }); };
         this.token = token || process.env.IPSTACK_ACCESSKEY;
         this.ip = ip || "66.115.169.224"; //test IP
-        console.timeStamp("Starting GeoLocation api");
-        this._updateLocation();
+        console.timeStamp('Starting GeoLocation api');
+        this.updateLocation();
     }
     GeoLocation.prototype.getLat = function () {
         console.timeStamp("Get Lat: " + this.geoIp.latitude);

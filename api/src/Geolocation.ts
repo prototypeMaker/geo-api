@@ -16,7 +16,7 @@ export class GeoLocation {
 
     console.timeStamp('Starting GeoLocation api');
 
-    this._updateLocation();
+    this.updateLocation();
   }
 
   getLat(): number {
@@ -40,7 +40,7 @@ export class GeoLocation {
   /**
    * Sends HTML request to ipstack.com & saves payload to `this.setAPIJson()`
    */
-  _updateLocation = async (): Promise<void> => {
+  updateLocation = async (): Promise<void> => {
     let returnValue = '';
 
     const options: http.RequestOptions = {
