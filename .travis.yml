@@ -1,6 +1,10 @@
 language: node_js
-
-scripts: 
+os: linux
+dist: bionic
+node_js:
+    - 13
+script: 
     - npm run test
-
+git:
+    quiet: true
 # todo -- run on github pages / heroku
