@@ -8,7 +8,7 @@
     "test": "NODE_ENV=test mocha './*/*.spec.js'",
     "build": "tsc",
     "tsc": "tsc",
-    "dev": "ts-node-dev --respawn --transpileOnly ./index.ts"
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/user2745/pi-server#readme",
   "dependencies": {
     "@google/maps": "^1.0.2",
+    "@types/es6-promise": "^3.3.0",
     "@types/express": "^4.17.6",
     "axios": "^0.19.1",
     "express": "^4.17.1",

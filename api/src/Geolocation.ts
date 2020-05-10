@@ -1,4 +1,4 @@
-import http from "http";
+import http from 'http';
 
 export class GeoLocation {
   private token: string | undefined;
@@ -14,7 +14,7 @@ export class GeoLocation {
     this.token = token || process.env.IPSTACK_ACCESSKEY;
     this.ip = ip || `66.115.169.224`; //test IP
 
-    console.timeStamp("Starting GeoLocation api");
+    console.timeStamp('Starting GeoLocation api');
 
     this._updateLocation();
   }
@@ -40,22 +40,22 @@ export class GeoLocation {
   /**
    * Sends HTML request to ipstack.com & saves payload to `this.setAPIJson()`
    */
-  _updateLocation = async () => {
-    let returnValue = "";
+  _updateLocation = async (): Promise<void> => {
+    let returnValue = '';
 
     const options: http.RequestOptions = {
-      hostname: "api.ipstack.com",
+      hostname: 'api.ipstack.com',
       port: 80,
       path: `/${this.ip}?access_key=${this.token}`,
-      agent: false,
+      agent: false
     };
 
     http.get(options, (res: http.IncomingMessage) => {
-      res.on("data", (data: any) => {
+      res.on('data', (data: any) => {
         returnValue += data;
       });
 
-      res.on("end", () => {
+      res.on('end', () => {
         returnValue = JSON.parse(returnValue.toString());
         this.setAPIJson(returnValue);
       });
