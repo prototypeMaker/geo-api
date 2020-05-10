@@ -1,4 +1,7 @@
-RpiWS     | [![Build Status](https://travis-ci.com/IoTresor/geo-api.svg?token=7qY9qZJNNLTXG7AiwWoN)](https://travis-ci.com/IoTresor/geo-api)
+RpiWS     | [![Build Status](https://travis-ci.com/IoTresor/geo-api.svg?token=7qY9qZJNNLTXG7AiwWoN)](https://travis-ci.com/IoTresor/geo-api)   |  [![Mergify Status][mergify-status]][mergify]
+
+[mergify]: https://mergify.io
+[mergify-status]: https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/iotresor/geo-api&style=flat
  
 Geolocation API built with NodeJs
 
