@@ -7,4 +7,3 @@ script:
     - npm run test
 git:
     quiet: true
-# todo -- run on github pages / heroku

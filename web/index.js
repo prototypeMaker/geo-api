@@ -6,12 +6,12 @@ let app = express();
 let port = process.env.PORT || '4202';
 let host = process.env.HOST || 'http://localhost';
 
-let Pi = new Geolocation('152.10.249.31');
+// let Pi = new Geolocation('152.10.249.31');
 
 // Grabs GeoIP
-setTimeout(() => {
-  console.log(`${JSON.stringify(Pi.getGeoIP(), null, 4)}`)
-}, 5000);
+// setTimeout(() => {
+//   console.log(`${JSON.stringify(Pi.getGeoIP(), null, 4)}`)
+// }, 5000);
 
 
 app.listen(port, error => {
