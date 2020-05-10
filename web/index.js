@@ -19,6 +19,8 @@ app.listen(port, error => {
   if (error) throw new Error(`[Console] Error on \n*******\n`);
 });
 
+app.get('/', (req, res) => { res.status('200'); res.end('ok')});
+
 // render files
 app.use(express.static('.'));
 
