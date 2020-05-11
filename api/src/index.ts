@@ -1,12 +1,12 @@
-import { GeoLocation } from './Geolocation';
-import express from 'express';
+import { GeoLocation } from "./Geolocation";
+import express from "express";
 
 const app = express();
 
 const port = process.env.PORT || 4202;
-const host = process.env.HOST || 'http://localhost';
+const host = process.env.HOST || "http://localhost";
 
-const pi = new GeoLocation('152.10.249.31');
+const pi = new GeoLocation("152.10.249.31");
 
 // Grabs GeoIP
 setTimeout(() => {
@@ -17,8 +17,12 @@ app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
 });
 
-app.get('/', (req, res) => {
-  res.send('hello world');
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+process.on("uncaughtException", (err) => {
+  throw err; // gotta test it now
 });
 
 module.exports = app;
