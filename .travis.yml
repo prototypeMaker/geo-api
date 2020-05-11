@@ -2,8 +2,22 @@ language: node_js
 os: linux
 dist: bionic
 node_js:
-    - 13
-script: 
-    - npm run test
+  - 13
+script:
+  - npm run test
 git:
-    quiet: true
+  quiet: true
+  #solution for multi-language repos
+#     matrix:
+#   include:
+#     - language: go
+#       go:
+#         - "1.11"
+#       script:
+#         - make test
+#         - make build
+
+#     - language: node_js
+#       node_js:
+#         - "7"
+#       script: yarn run build
