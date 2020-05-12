@@ -1,9 +1,34 @@
-language: node_js
-os: linux
-dist: bionic
-node_js:
-    - 13
-script: 
-    - npm run test
-git:
-    quiet: true
+# language: node_js
+# os: linux
+# dist: bionic
+# node_js:
+#   - 13
+# script:
+#   - npm run test
+# git:
+#   quiet: true
+
+matrix:
+  include:
+    # api build
+    - language: node_js
+      os: linux
+      node_js: 13
+      before_script:
+        - cd api
+      script:
+        - npm run test
+      git:
+        quiet: true
+
+    # web build
+    - language: node_js
+      os: linux
+      node_js: 13
+      before_script:
+        - cd web
+      script:
+        - npm run test
+      git:
+        quiet: true
+    # here will be another build for mobile
