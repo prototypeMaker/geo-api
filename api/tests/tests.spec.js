@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../web/index');
+const app = require('../src/index');
 
 describe("GET '/' route", () => {
   it('should respond ok', done => {
