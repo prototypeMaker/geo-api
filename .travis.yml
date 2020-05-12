@@ -17,7 +17,7 @@ matrix:
       before_script:
         - cd api
       script:
-        - npm run test
+        - npm install && npm run test
       git:
         quiet: true
 
@@ -28,7 +28,7 @@ matrix:
       before_script:
         - cd web
       script:
-        - npm run test
+        - npm install && npm run test
       git:
         quiet: true
     # here will be another build for mobile
