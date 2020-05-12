@@ -22,7 +22,8 @@ app.get("/", (req, res) => {
 });
 
 process.on("uncaughtException", (err) => {
-  throw err; // gotta test it now
+  console.log(err);
+  process.exit(1);
 });
 
 module.exports = app;
