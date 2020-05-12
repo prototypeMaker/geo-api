@@ -1,23 +1,26 @@
-language: node_js
-os: linux
-dist: bionic
-node_js:
-  - 13
-script:
-  - npm run test
-git:
-  quiet: true
-  #solution for multi-language repos
-#     matrix:
-#   include:
-#     - language: go
-#       go:
-#         - "1.11"
-#       script:
-#         - make test
-#         - make build
+matrix:
+  include:
+    # api build
+    - language: node_js
+      node_js: 13
+      os: linux
+      dist: bionic
+      before_script:
+        - cd api
+      script:
+        - npm install && npm run test
+      git:
+        quiet: true
 
-#     - language: node_js
-#       node_js:
-#         - "7"
-#       script: yarn run build
+    # web build
+    - language: node_js
+      node_js: 13
+      os: linux
+      dist: bionic
+      before_script:
+        - cd web
+      script:
+        - npm install && npm run test
+      git:
+        quiet: true
+    # here will be another build for mobile
