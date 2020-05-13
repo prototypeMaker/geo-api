@@ -39,6 +39,7 @@
     "mocha": "^6.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-google-maps": "^9.4.5",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.9.2"
   },
