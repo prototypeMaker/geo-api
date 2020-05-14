@@ -7,9 +7,46 @@ const coordinates = {
   longitude: -81.67890930175781,
 };
 
-class App extends React.Component {
+type Props = {};
+
+type State = {
+  isLoaded: boolean;
+  items: [];
+  error: string;
+};
+
+class App extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.setState({
+      isLoaded: false,
+      items: [],
+      error: "",
+    });
+  }
+
+  componentDidMount() {
+    fetch("http://localhost:4202/")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            items: result.items,
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
+  }
+
   render() {
-    return <GeoLocationMap coordinates={coordinates}></GeoLocationMap>;
+    return this.state && this.state.items;
+    // return <GeoLocationMap coordinates={coordinates}></GeoLocationMap>;
   }
 }
 
