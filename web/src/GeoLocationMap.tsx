@@ -16,13 +16,13 @@ export class GeoLocationMap extends React.Component<Props> {
   }
 
   render() {
-    const testCoordinates = {
+    const coordinates = {
       lat: this.props.coordinates.latitude,
       lng: this.props.coordinates.longitude
     };
     const GoogleMapExample = withGoogleMap(props => (
-      <GoogleMap defaultCenter={testCoordinates} defaultZoom={20}>
-        <Marker position={testCoordinates} />
+      <GoogleMap defaultCenter={coordinates} defaultZoom={20}>
+        <Marker position={coordinates} />
       </GoogleMap>
     ));
     return (
