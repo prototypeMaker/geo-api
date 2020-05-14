@@ -1,6 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import React from 'react';
+import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
 interface GeoLocationMapProps {
   coordinates: {
@@ -19,9 +18,9 @@ export class GeoLocationMap extends React.Component<Props> {
   render() {
     const testCoordinates = {
       lat: this.props.coordinates.latitude,
-      lng: this.props.coordinates.longitude,
+      lng: this.props.coordinates.longitude
     };
-    const GoogleMapExample = withGoogleMap((props) => (
+    const GoogleMapExample = withGoogleMap(props => (
       <GoogleMap defaultCenter={testCoordinates} defaultZoom={20}>
         <Marker position={testCoordinates} />
       </GoogleMap>
@@ -29,7 +28,7 @@ export class GeoLocationMap extends React.Component<Props> {
     return (
       <div>
         <GoogleMapExample
-          containerElement={<div style={{ height: `500px`, width: "500px" }} />}
+          containerElement={<div style={{ height: `500px`, width: '500px' }} />}
           mapElement={<div style={{ height: `100%` }} />}
         />
       </div>

@@ -1,53 +1,47 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { GeoLocationMap } from "./GeoLocationMap";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { GeoLocationMap } from './GeoLocationMap';
 
-const coordinates = {
-  latitude: 36.214151845703125,
-  longitude: -81.67890930175781,
-};
-
-type Props = {};
-
-type State = {
-  isLoaded: boolean;
-  items: [];
-  error: string;
-};
-
-class App extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.setState({
-      isLoaded: false,
-      items: [],
-      error: "",
-    });
-  }
+class App extends React.Component {
+  state = {
+    items: {
+      latitude: 0,
+      longitude: 0
+    },
+    isLoaded: false,
+    error: ''
+  };
 
   componentDidMount() {
-    fetch("http://localhost:4202/")
-      .then((res) => res.json())
+    fetch('http://localhost:4202/')
+      .then(res => res.json())
       .then(
-        (result) => {
+        result => {
           this.setState({
             isLoaded: true,
-            items: result.items,
+            items: result.items
           });
         },
-        (error) => {
+        error => {
           this.setState({
             isLoaded: true,
-            error,
+            error
           });
         }
       );
   }
 
   render() {
-    return this.state && this.state.items;
-    // return <GeoLocationMap coordinates={coordinates}></GeoLocationMap>;
+    return (
+      <div>
+        {this.state.error ? (
+          this.state.error
+        ) : (
+          <GeoLocationMap coordinates={this.state.items}></GeoLocationMap>
+        )}
+      </div>
+    );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById('app'));

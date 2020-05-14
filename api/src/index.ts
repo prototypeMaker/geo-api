@@ -27,7 +27,14 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('hello world');
+  const response = {
+    items: {
+      latitude: 36.214151845703125,
+      longitude: -81.67890930175781
+    }
+  };
+
+  res.send(JSON.stringify(response));
 });
 
 module.exports = app;
