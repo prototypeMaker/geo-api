@@ -71,8 +71,10 @@ var GeoLocation = /** @class */ (function () {
                     res.on('data', function (data) {
                         returnValue += data;
                     });
-                    var authResults = "none";
-                    res.statusCode == 200 ? authResults = "success" : authResults = "failed";
+                    var authResults = 'none';
+                    res.statusCode == 200
+                        ? (authResults = 'success')
+                        : (authResults = 'failed');
                     console.log("[Geolocation] HTTP " + res.statusCode + ": Authentication " + authResults);
                     res.on('end', function () {
                         returnValue = JSON.parse(returnValue.toString());

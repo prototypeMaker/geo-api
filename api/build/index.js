@@ -10,15 +10,15 @@ var port = process.env.PORT || 4202;
 var host = process.env.HOST || 'http://localhost';
 var pi = new Geolocation_1.GeoLocation('10.240.29.204');
 var device = new Particle_1.Particle();
-// Grabs GeoIP
-setTimeout(function () {
-    // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
-}, 5000);
 app.listen(port, function () {
     console.log("Listening on " + host + ":" + port + "..");
 });
 app.get('/', function (req, res) {
-    console.log("Success");
+    console.log('Success');
+});
+process.on('uncaughtException', function (err) {
+    console.log(err);
+    process.exit(1);
 });
 module.exports = app;
 // Reference

@@ -22,6 +22,11 @@ app.get('/', (req: http.IncomingMessage, res: http.IncomingMessage) => {
   console.log('Success');
 });
 
+process.on('uncaughtException', err => {
+  console.log(err);
+  process.exit(1);
+});
+
 module.exports = app;
 
 // Reference
