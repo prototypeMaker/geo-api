@@ -5,10 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
-    "dev": "ts-node-dev --respawn --transpileOnly ./index.ts",
-    "build": "parcel build index.html && tsc",
-    "test": "NODE_ENV=test mocha './*/*.spec.js'",
-    "tsc": "tsc"
+    "build": "parcel build index.html",
+    "test": "NODE_ENV=test mocha './*/*.spec.js'"
   },
   "repository": {
     "type": "git",
@@ -17,8 +15,8 @@
   "keywords": [
     "raspberry-pi",
     "nodejs",
-    "server",
-    "pi",
+    "geolocation",
+    "location",
     "pi-server"
   ],
   "author": "Kevin Kamto",
@@ -29,18 +27,12 @@
   "homepage": "https://github.com/user2745/pi-server#readme",
   "dependencies": {
     "@google/maps": "^1.0.2",
-    "@types/express": "^4.17.6",
     "axios": "^0.19.1",
     "express": "^4.17.1",
-    "mocha": "^6.2.0",
-    "ts-node-dev": "^1.0.0-pre.44",
-    "typescript": "^3.8.3"
+    "mocha": "^6.2.0"
   },
   "test-unit": "NODE_ENV=test mocha '/**/*.spec.js'",
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "babel-plugin-add-module-exports": "^1.0.2",
-    "babel-preset-es2015": "^6.24.1",
     "parcel-bundler": "^1.12.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
