@@ -35,11 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var http_1 = __importDefault(require("http"));
+var http = __importStar(require("http"));
 var GeoLocation = /** @class */ (function () {
     /**
      * @constructor Constructs instance of a device's GeoLocation information
@@ -63,10 +67,15 @@ var GeoLocation = /** @class */ (function () {
                     path: "/" + this.ip + "?access_key=" + this.token,
                     agent: false
                 };
-                http_1.default.get(options, function (res) {
+                http.get(options, function (res) {
                     res.on('data', function (data) {
                         returnValue += data;
                     });
+                    var authResults = 'none';
+                    res.statusCode == 200
+                        ? (authResults = 'success')
+                        : (authResults = 'failed');
+                    console.log("[Geolocation] HTTP " + res.statusCode + ": Authentication " + authResults);
                     res.on('end', function () {
                         returnValue = JSON.parse(returnValue.toString());
                         _this.setAPIJson(returnValue);

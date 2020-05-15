@@ -1,10 +1,14 @@
 import { GeoLocation } from './Geolocation';
 import express from 'express';
+import { Particle } from './Particle';
 
 const app = express();
 
 const port = process.env.PORT || 4202;
 const host = process.env.HOST || 'http://localhost';
+
+const pi = new GeoLocation('10.240.29.204');
+const device = new Particle();
 
 app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
