@@ -1,11 +1,7 @@
-// import { GeoLocation } from './Geolocation';
-import * as http from 'http';
 import { GeoLocation } from './Geolocation';
-const express = require('express');
+import express from 'express';
 import { Particle } from './Particle';
-// const Particle = require('./Particle');
 
-// const app = express();
 const app = express();
 
 const port = process.env.PORT || 4202;
@@ -18,8 +14,25 @@ app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
 });
 
-app.get('/', (req: http.IncomingMessage, res: http.IncomingMessage) => {
-  console.log('Success');
+// Allows CORS. To be replaced by proper package or possibly authentication system?
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk?
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+
+app.get('/', (req, res) => {
+  const response = {
+    items: {
+      latitude: 36.214151845703125,
+      longitude: -81.67890930175781
+    }
+  };
+
+  res.send(JSON.stringify(response));
 });
 
 process.on('uncaughtException', err => {
