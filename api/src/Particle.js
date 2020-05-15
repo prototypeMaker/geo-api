@@ -1,0 +1,25 @@
+"use strict";
+exports.__esModule = true;
+exports.Particle = void 0;
+var https = require("https");
+var Particle = /** @class */ (function () {
+    function Particle() {
+        // noargs constructor with defaults
+        this.$token = process.env.TKNParticle;
+        // this.$token = "potatoe";
+        this.Authentication(this.$token);
+    }
+    Particle.prototype.Authentication = function ($token) {
+        var options = "https://api.particle.io/v1/devices?access_token=" + this.$token;
+        https
+            .request(options, function (res) {
+            var authResults = "none";
+            res.statusCode == 200 ? authResults = "success" : authResults = "failed";
+            console.log("[Particle] HTTP " + res.statusCode + ": Authentication " + authResults);
+        })
+            .on("error", function (error) { console.log("[Particle] Error attempting to Authentication + please check your API key"); })
+            .end("[API] Successfully Authorized");
+    };
+    return Particle;
+}());
+exports.Particle = Particle;
