@@ -1,27 +1,28 @@
-import { GeoLocation } from "./Geolocation";
-import express from "express";
+// import { GeoLocation } from './Geolocation';
+import * as http from 'http';
+import { GeoLocation } from './Geolocation';
+const express = require('express');
+import { Particle } from './Particle';
+// const Particle = require('./Particle');
 
+// const app = express();
 const app = express();
 
 const port = process.env.PORT || 4202;
-const host = process.env.HOST || "http://localhost";
+const host = process.env.HOST || 'http://localhost';
 
-const pi = new GeoLocation("152.10.249.31");
-
-// Grabs GeoIP
-setTimeout(() => {
-  console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
-}, 5000);
+const pi = new GeoLocation('10.240.29.204');
+const device = new Particle();
 
 app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
 });
 
-app.get("/", (req, res) => {
-  res.send("hello world");
+app.get('/', (req: http.IncomingMessage, res: http.IncomingMessage) => {
+  console.log('Success');
 });
 
-process.on("uncaughtException", (err) => {
+process.on('uncaughtException', err => {
   console.log(err);
   process.exit(1);
 });

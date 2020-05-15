@@ -1,25 +1,22 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var Geolocation_1 = require("./Geolocation");
-var express_1 = __importDefault(require("express"));
-var app = express_1.default();
+var express = require('express');
+var Particle_1 = require("./Particle");
+// const Particle = require('./Particle');
+// const app = express();
+var app = express();
 var port = process.env.PORT || 4202;
-var host = process.env.HOST || "http://localhost";
-var pi = new Geolocation_1.GeoLocation("152.10.249.31");
-// Grabs GeoIP
-setTimeout(function () {
-    console.log("" + JSON.stringify(pi.getGeoIp(), null, 4));
-}, 5000);
+var host = process.env.HOST || 'http://localhost';
+var pi = new Geolocation_1.GeoLocation('10.240.29.204');
+var device = new Particle_1.Particle();
 app.listen(port, function () {
     console.log("Listening on " + host + ":" + port + "..");
 });
-app.get("/", function (req, res) {
-    res.send("hello world");
+app.get('/', function (req, res) {
+    console.log('Success');
 });
-process.on("uncaughtException", function (err) {
+process.on('uncaughtException', function (err) {
     console.log(err);
     process.exit(1);
 });
