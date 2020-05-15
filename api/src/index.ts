@@ -10,13 +10,20 @@ const host = process.env.HOST || 'http://localhost';
 const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
 
+// Grabs GeoIP
+setTimeout(() => {
+  // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
+}, 5000);
+
+
+
 app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
-});
+}).
 
 // Allows CORS. To be replaced by proper package or possibly authentication system?
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk?
+  res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk? no
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'

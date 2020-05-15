@@ -10,12 +10,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var https = __importStar(require("https"));
 var Particle = /** @class */ (function () {
     function Particle() {
+        this.url = "https://api.particle.io/v1/devices";
         // noargs constructor with defaults
-        var $token = process.env.TKNParticle;
-        this.Authentication($token);
+        this.$token = process.env.TKNParticle;
+        this.Authentication(this.$token);
     }
     Particle.prototype.Authentication = function ($token) {
-        var options = "https://api.particle.io/v1/devices?access_token=" + $token;
+        var options = this.url + "?access_token=" + this.$token;
         https
             .request(options, function (res) {
             var authResults = 'none';
@@ -28,6 +29,9 @@ var Particle = /** @class */ (function () {
             console.log("[Particle] Error attempting to Authentication + please check your API key");
         })
             .end('[API] Successfully Authorized');
+    };
+    Particle.prototype.devices = function () {
+        https.get(this.url, function (res) { });
     };
     return Particle;
 }());
