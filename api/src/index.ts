@@ -14,17 +14,12 @@ const host = process.env.HOST || 'http://localhost';
 const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
 
-// Grabs GeoIP
-setTimeout(() => {
-  // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
-}, 5000);
-
 app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
 });
 
 app.get('/', (req: http.IncomingMessage, res: http.IncomingMessage) => {
-  console.log("Success")
+  console.log('Success');
 });
 
 module.exports = app;

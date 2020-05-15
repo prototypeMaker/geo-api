@@ -33,6 +33,9 @@
   },
   "test-unit": "NODE_ENV=test mocha '/**/*.spec.js'",
   "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-preset-es2015": "^6.24.1",
     "parcel-bundler": "^1.12.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

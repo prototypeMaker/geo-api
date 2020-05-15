@@ -54,9 +54,13 @@ export class GeoLocation {
       res.on('data', (data: any) => {
         returnValue += data;
       });
-      let authResults = "none"
-      res.statusCode == 200 ? authResults = "success" : authResults = "failed";
-      console.log(`[Geolocation] HTTP ${res.statusCode}: Authentication ${authResults}`);
+      let authResults = 'none';
+      res.statusCode == 200
+        ? (authResults = 'success')
+        : (authResults = 'failed');
+      console.log(
+        `[Geolocation] HTTP ${res.statusCode}: Authentication ${authResults}`
+      );
       res.on('end', () => {
         returnValue = JSON.parse(returnValue.toString());
         this.setAPIJson(returnValue);
