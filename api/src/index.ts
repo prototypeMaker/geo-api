@@ -35,6 +35,11 @@ app.get('/', (req, res) => {
   res.send(JSON.stringify(response));
 });
 
+process.on('uncaughtException', err => {
+  console.log(err);
+  process.exit(1);
+});
+
 module.exports = app;
 
 // Reference
