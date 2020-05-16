@@ -15,11 +15,9 @@ setTimeout(() => {
   // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
 }, 5000);
 
-
-
 app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
-})
+});
 
 // Allows CORS. To be replaced by proper package or possibly authentication system?
 app.use((req, res, next) => {
