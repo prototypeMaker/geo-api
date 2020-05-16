@@ -44,7 +44,7 @@ class GeoLocation
     }
 
     // Sends HTML req to ipstack.com & saves payload to 'this.setAPIJson()'
-    _updateLocation = async () => 
+    async _updateLocation()
     {
         var returnValue = new String();
 
