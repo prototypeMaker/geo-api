@@ -8,7 +8,7 @@ var express_1 = __importDefault(require("express"));
 var Particle_1 = require("./Particle");
 var app = express_1.default();
 var port = process.env.PORT || 4202;
-var host = process.env.HOST || 'http://localhost';
+var host = process.env.HOST || 'http://ec2-35-170-243-209.compute-1.amazonaws.com:4202/';
 var pi = new Geolocation_1.GeoLocation('10.240.29.204');
 var device = new Particle_1.Particle();
 // Grabs GeoIP
