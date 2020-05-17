@@ -5,6 +5,9 @@
 [mergify]: https://mergify.io
 [mergify-status]: https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/iotresor/geo-api&style=flat
 
+[mergify]: https://mergify.io
+[mergify-status]: https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/iotresor/geo-api&style=flat
+ 
 Geolocation API built with NodeJs
 
 This too utilizes the made Geolocation API to render it on Web & Mobile
