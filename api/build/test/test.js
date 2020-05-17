@@ -14,7 +14,7 @@ describe('GET /', function () {
             }
         };
         var stringy = JSON.stringify(response);
-        request_1.default('http://localhost:4202/', function (error, response, body) {
+        request_1.default('http://ec2-35-170-243-209.compute-1.amazonaws.com:4202/', function (error, response, body) {
             chai_1.default.expect(body).to.equal(stringy);
             done();
         });

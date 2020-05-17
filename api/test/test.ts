@@ -12,9 +12,12 @@ describe('GET /', () => {
 
     const stringy = JSON.stringify(response);
 
-    request('http://localhost:4202/', (error, response, body) => {
-      chai.expect(body).to.equal(stringy);
-      done();
-    });
+    request(
+      'http://ec2-35-170-243-209.compute-1.amazonaws.com:4202/',
+      (error, response, body) => {
+        chai.expect(body).to.equal(stringy);
+        done();
+      }
+    );
   });
 });
