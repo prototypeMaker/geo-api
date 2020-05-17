@@ -5,7 +5,8 @@ import { Particle } from './Particle';
 const app = express();
 
 const port = process.env.PORT || 4202;
-const host = process.env.HOST || 'http://localhost';
+const host =
+  process.env.HOST || 'http://ec2-35-170-243-209.compute-1.amazonaws.com:4202/';
 
 const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
@@ -15,11 +16,9 @@ setTimeout(() => {
   // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
 }, 5000);
 
-
-
 app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
-})
+});
 
 // Allows CORS. To be replaced by proper package or possibly authentication system?
 app.use((req, res, next) => {
