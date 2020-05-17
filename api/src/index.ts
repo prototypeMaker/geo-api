@@ -6,7 +6,7 @@ const app = express();
 
 const port = process.env.PORT || 4202;
 const host =
-  process.env.HOST || 'http://ec2-35-170-243-209.compute-1.amazonaws.com:4202/';
+  process.env.HOST || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
 
 const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
