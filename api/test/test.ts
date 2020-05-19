@@ -4,7 +4,7 @@ import request from 'request';
 const host =
   process.env.HOSTNAME || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
 const port = process.env.PORT || 4202;
-const url = `http://${host}:${port}`;
+const url = `${host}:${port}`;
 
 describe('GET /', () => {
   it('should return coordinates', function(done) {
@@ -16,6 +16,8 @@ describe('GET /', () => {
     };
 
     const stringy = JSON.stringify(response);
+
+    console.log(url);
 
     request(url, (error, response, body) => {
       chai.expect(body).to.equal(stringy);

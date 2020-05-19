@@ -7,7 +7,7 @@ var chai_1 = __importDefault(require("chai"));
 var request_1 = __importDefault(require("request"));
 var host = process.env.HOSTNAME || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
 var port = process.env.PORT || 4202;
-var url = "http://" + host + ":" + port;
+var url = host + ":" + port;
 describe('GET /', function () {
     it('should return coordinates', function (done) {
         var response = {
@@ -17,6 +17,7 @@ describe('GET /', function () {
             }
         };
         var stringy = JSON.stringify(response);
+        console.log(url);
         request_1.default(url, function (error, response, body) {
             chai_1.default.expect(body).to.equal(stringy);
             done();
