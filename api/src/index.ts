@@ -5,7 +5,8 @@ import { Particle } from './Particle';
 const app = express();
 
 const port = process.env.PORT || 4202;
-const host = process.env.HOSTNAME || 'localhost';
+const host =
+  process.env.HOSTNAME || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
 
 const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
