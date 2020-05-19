@@ -17,8 +17,6 @@ describe('GET /', () => {
 
     const stringy = JSON.stringify(response);
 
-    console.log(url);
-
     request(url, (error, response, body) => {
       chai.expect(body).to.equal(stringy);
       done();
