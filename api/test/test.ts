@@ -1,8 +1,9 @@
 import chai from 'chai';
 import request from 'request';
 
-const host = process.env.HOSTNAME;
-const port = process.env.PORT;
+const host =
+  process.env.HOSTNAME || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
+const port = process.env.PORT || 4202;
 const url = `http://${host}:${port}`;
 
 describe('GET /', () => {
