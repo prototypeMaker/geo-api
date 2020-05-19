@@ -1,6 +1,10 @@
 import chai from 'chai';
 import request from 'request';
 
+const host = process.env.HOSTNAME;
+const port = process.env.PORT;
+const url = `http://${host}:${port}`;
+
 describe('GET /', () => {
   it('should return coordinates', function(done) {
     const response = {
@@ -12,12 +16,9 @@ describe('GET /', () => {
 
     const stringy = JSON.stringify(response);
 
-    request(
-      'http://ec2-35-170-243-209.compute-1.amazonaws.com:4202/',
-      (error, response, body) => {
-        chai.expect(body).to.equal(stringy);
-        done();
-      }
-    );
+    request(url, (error, response, body) => {
+      chai.expect(body).to.equal(stringy);
+      done();
+    });
   });
 });

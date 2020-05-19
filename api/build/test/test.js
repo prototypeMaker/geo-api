@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var chai_1 = __importDefault(require("chai"));
 var request_1 = __importDefault(require("request"));
+var host = process.env.HOSTNAME;
+var port = process.env.PORT;
+var url = "http://" + host + ":" + port;
 describe('GET /', function () {
     it('should return coordinates', function (done) {
         var response = {
@@ -14,7 +17,10 @@ describe('GET /', function () {
             }
         };
         var stringy = JSON.stringify(response);
-        request_1.default('http://ec2-35-170-243-209.compute-1.amazonaws.com:4202/', function (error, response, body) {
+        console.log(host);
+        console.log(port);
+        console.log(url);
+        request_1.default(url, function (error, response, body) {
             chai_1.default.expect(body).to.equal(stringy);
             done();
         });

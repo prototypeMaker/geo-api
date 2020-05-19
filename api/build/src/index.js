@@ -8,7 +8,7 @@ var express_1 = __importDefault(require("express"));
 var Particle_1 = require("./Particle");
 var app = express_1.default();
 var port = process.env.PORT || 4202;
-var host = process.env.HOST || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
+var host = process.env.HOSTNAME || 'localhost';
 var pi = new Geolocation_1.GeoLocation('10.240.29.204');
 var device = new Particle_1.Particle();
 // Grabs GeoIP
@@ -20,7 +20,7 @@ app.listen(port, function () {
 });
 // Allows CORS. To be replaced by proper package or possibly authentication system?
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk? no
+    res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk?
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
