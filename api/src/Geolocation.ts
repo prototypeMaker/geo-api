@@ -2,7 +2,7 @@ import * as http from 'http';
 import pino from 'pino';
 
 const logger = pino({
-  level: 'debug',
+  level: 'trace',
   prettyPrint: {
     levelFirst: true,
     translateTime: true,

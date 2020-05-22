@@ -6,7 +6,7 @@ import { Particle } from './Particle';
 const app = express();
 
 const logger = pino({
-  level: 'info',
+  level: 'trace',
   prettyPrint: {
     levelFirst: true,
     translateTime: true,
@@ -27,7 +27,7 @@ app.listen(port, () => {
 
 // Allows CORS. To be replaced by proper package or possibly authentication system?
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk?
+  res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 });
 
 process.on('uncaughtException', err => {
-  logger.error(err);
+  logger.fatal(err);
   process.exit(1);
 });
 
