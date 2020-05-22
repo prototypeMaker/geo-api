@@ -5,7 +5,8 @@ const logger = pino({
   level: 'debug',
   prettyPrint: {
     levelFirst: true,
-    translateTime: true
+    translateTime: true,
+    ignore: 'pid,hostname'
   }
 });
 

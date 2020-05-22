@@ -5,7 +5,8 @@ const logger = pino({
   level: 'fatal',
   prettyPrint: {
     levelFirst: true,
-    translateTime: true
+    translateTime: true,
+    ignore: 'hostname, pid'
   }
 });
 
@@ -19,11 +20,13 @@ export class Particle {
 
   private authenticate($url?: string) {
     const token = process.env.TKNParticle;
-    const options: string = `${this.url}?access_token=${token}`;
+    const options: https.RequestOptions = {
+      timeout: 10,
+      path: `${this.url}?access_token=${token}`
+    };
+
     https
       .request(options, res => {
-        console.log('hi');
-
         let authResults = '';
         res.statusCode == 200
           ? (authResults = 'success')
@@ -34,9 +37,7 @@ export class Particle {
         );
       })
       .on('error', error => {
-        console.log('bye');
-
-        logger.warn(
+        logger.debug(
           `[Particle] Error attempting to Authentication. Error: ${error}`
         );
       });

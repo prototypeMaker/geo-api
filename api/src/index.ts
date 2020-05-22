@@ -6,10 +6,11 @@ import { Particle } from './Particle';
 const app = express();
 
 const logger = pino({
-  level: 'fatal',
+  level: 'info',
   prettyPrint: {
     levelFirst: true,
-    translateTime: true
+    translateTime: true,
+    ignore: 'pid,hostname'
   }
 });
 
