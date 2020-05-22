@@ -42,8 +42,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var http = __importStar(require("http"));
+var pino_1 = __importDefault(require("pino"));
+var logger = pino_1.default({
+    level: 'debug',
+    prettyPrint: {
+        levelFirst: true,
+        translateTime: true
+    }
+});
 var GeoLocation = /** @class */ (function () {
     /**
      * @constructor Constructs instance of a device's GeoLocation information
@@ -71,11 +82,11 @@ var GeoLocation = /** @class */ (function () {
                     res.on('data', function (data) {
                         returnValue += data;
                     });
-                    var authResults = 'none';
+                    var authResults = '';
                     res.statusCode == 200
                         ? (authResults = 'success')
                         : (authResults = 'failed');
-                    console.log("[Geolocation] HTTP " + res.statusCode + ": Authentication " + authResults);
+                    logger.debug("[Geolocation] HTTP " + res.statusCode + ": Authentication " + authResults);
                     res.on('end', function () {
                         returnValue = JSON.parse(returnValue.toString());
                         _this.setAPIJson(returnValue);
@@ -86,15 +97,15 @@ var GeoLocation = /** @class */ (function () {
         }); };
         this.token = token || process.env.IPSTACK_ACCESSKEY;
         this.ip = ip || "66.115.169.224"; //test IP
-        console.timeStamp('Starting GeoLocation api');
+        logger.debug("Starting GeoLocation API at " + ip + "...");
         this.updateLocation();
     }
     GeoLocation.prototype.getLat = function () {
-        console.timeStamp("Get Lat: " + this.geoIp.latitude);
+        logger.debug("Getting " + this.ip + "'s latitude: " + this.geoIp.latitude);
         return this.geoIp.latitude;
     };
     GeoLocation.prototype.getLong = function () {
-        console.log("Get Longitude: " + this.geoIp.longitude);
+        logger.debug("Getting " + this.ip + "'s longitude: " + this.geoIp.longitude);
         return this.geoIp.longitude;
     };
     GeoLocation.prototype.setAPIJson = function (newValue) {

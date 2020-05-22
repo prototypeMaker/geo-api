@@ -1,8 +1,17 @@
-import { GeoLocation } from './Geolocation';
 import express from 'express';
+import pino from 'pino';
+import { GeoLocation } from './Geolocation';
 import { Particle } from './Particle';
 
 const app = express();
+
+const logger = pino({
+  level: 'fatal',
+  prettyPrint: {
+    levelFirst: true,
+    translateTime: true
+  }
+});
 
 const port = process.env.PORT || 4202;
 const host =
@@ -11,13 +20,8 @@ const host =
 const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
 
-// Grabs GeoIP
-setTimeout(() => {
-  // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
-}, 5000);
-
 app.listen(port, () => {
-  console.log(`Listening on ${host}:${port}..`);
+  logger.info(`Listening on ${host}:${port}...`);
 });
 
 // Allows CORS. To be replaced by proper package or possibly authentication system?
@@ -38,11 +42,13 @@ app.get('/', (req, res) => {
     }
   };
 
+  logger.debug(`GET ${req.path}`);
+
   res.send(JSON.stringify(response));
 });
 
 process.on('uncaughtException', err => {
-  console.log(err);
+  logger.error(err);
   process.exit(1);
 });
 

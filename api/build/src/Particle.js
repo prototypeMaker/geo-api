@@ -6,8 +6,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var https = __importStar(require("https"));
+var pino_1 = __importDefault(require("pino"));
+var logger = pino_1.default({
+    level: 'fatal',
+    prettyPrint: {
+        levelFirst: true,
+        translateTime: true
+    }
+});
 var Particle = /** @class */ (function () {
     function Particle($url) {
         this.url = $url || "https://api.particle.io/v1/devices";
@@ -18,14 +29,16 @@ var Particle = /** @class */ (function () {
         var options = this.url + "?access_token=" + token;
         https
             .request(options, function (res) {
-            var authResults = 'none';
+            console.log('hi');
+            var authResults = '';
             res.statusCode == 200
                 ? (authResults = 'success')
                 : (authResults = 'failed');
-            console.log("[Particle] HTTP " + res.statusCode + ": Authentication " + authResults);
+            logger.debug("[Particle] HTTP " + res.statusCode + ": Authentication " + authResults);
         })
             .on('error', function (error) {
-            console.log("[Particle] Error attempting to Authentication + please check your API key");
+            console.log('bye');
+            logger.warn("[Particle] Error attempting to Authentication. Error: " + error);
         });
     };
     Particle.prototype.devices = function () {

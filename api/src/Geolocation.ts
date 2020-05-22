@@ -1,4 +1,13 @@
 import * as http from 'http';
+import pino from 'pino';
+
+const logger = pino({
+  level: 'debug',
+  prettyPrint: {
+    levelFirst: true,
+    translateTime: true
+  }
+});
 
 export class GeoLocation {
   private token: string | undefined;
@@ -14,18 +23,17 @@ export class GeoLocation {
     this.token = token || process.env.IPSTACK_ACCESSKEY;
     this.ip = ip || `66.115.169.224`; //test IP
 
-    console.timeStamp('Starting GeoLocation api');
-
+    logger.debug(`Starting GeoLocation API at ${ip}...`);
     this.updateLocation();
   }
 
   getLat(): number {
-    console.timeStamp(`Get Lat: ${this.geoIp.latitude}`);
+    logger.debug(`Getting ${this.ip}'s latitude: ${this.geoIp.latitude}`);
     return this.geoIp.latitude;
   }
 
   getLong(): number {
-    console.log(`Get Longitude: ${this.geoIp.longitude}`);
+    logger.debug(`Getting ${this.ip}'s longitude: ${this.geoIp.longitude}`);
     return this.geoIp.longitude;
   }
 
@@ -54,13 +62,17 @@ export class GeoLocation {
       res.on('data', (data: any) => {
         returnValue += data;
       });
-      let authResults = 'none';
+
+      let authResults = '';
+
       res.statusCode == 200
         ? (authResults = 'success')
         : (authResults = 'failed');
-      console.log(
+
+      logger.debug(
         `[Geolocation] HTTP ${res.statusCode}: Authentication ${authResults}`
       );
+
       res.on('end', () => {
         returnValue = JSON.parse(returnValue.toString());
         this.setAPIJson(returnValue);
