@@ -2,11 +2,11 @@ import * as https from 'https';
 import pino from 'pino';
 
 const logger = pino({
-  level: 'fatal',
+  level: 'trace',
   prettyPrint: {
     levelFirst: true,
     translateTime: true,
-    ignore: 'hostname, pid'
+    ignore: 'pid,hostname'
   }
 });
 
@@ -21,8 +21,9 @@ export class Particle {
   private authenticate($url?: string) {
     const token = process.env.TKNParticle;
     const options: https.RequestOptions = {
-      timeout: 10,
-      path: `${this.url}?access_token=${token}`
+      hostname: 'api.particle.io',
+      timeout: 10000,
+      path: `/v1/devices?access_token=${token}`
     };
 
     https
@@ -36,10 +37,11 @@ export class Particle {
           `[Particle] HTTP ${res.statusCode}: Authentication ${authResults}`
         );
       })
-      .on('error', error => {
-        logger.debug(
-          `[Particle] Error attempting to Authentication. Error: ${error}`
-        );
+      .on('connect', response => {
+        logger.debug(`[Particle] ${response}`);
+      })
+      .on('error', response => {
+        logger.error(`[Particle] ${response}`);
       });
   }
 
