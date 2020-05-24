@@ -1,7 +1,10 @@
 "use strict";
-exports.__esModule = true;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Particle = void 0;
-var https_1 = require("https");
+var https_1 = __importDefault(require("https"));
 var Particle = /** @class */ (function () {
     function Particle(_$deviceID) {
         this.token = process.env.TKNParticle;
@@ -11,7 +14,7 @@ var Particle = /** @class */ (function () {
     }
     Particle.prototype.authenticate = function ($url) {
         var options = this.url + "?access_token=" + this.token;
-        https_1["default"]
+        https_1.default
             .get(options, function (res) {
             var authResults = res.statusCode == 200 ? (authResults = 'success') : (authResults = 'failed');
             console.log("[Particle] HTTP " + res.statusCode + ": Authentication " + authResults);
@@ -22,7 +25,7 @@ var Particle = /** @class */ (function () {
     };
     Particle.prototype.devices = function () {
         var url = this.url + "/?access_token=" + this.token;
-        https_1["default"].get(url, function (res) { res.read(); });
+        https_1.default.get(url, function (res) { res.read(); });
     };
     return Particle;
 }());

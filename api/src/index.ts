@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 4202;
 const host = process.env.HOST || 'http://localhost';
 
-const pi = new GeoLocation('10.240.29.204');
+const pi = new GeoLocation('38.132.156.175');
 const device = new Particle();
 
 // Grabs GeoIP
@@ -32,6 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
+  
   const response = {
     items: {
       latitude: 36.214151845703125,
