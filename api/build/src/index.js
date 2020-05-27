@@ -9,10 +9,11 @@ var Geolocation_1 = require("./Geolocation");
 var Particle_1 = require("./Particle");
 var app = express_1.default();
 var logger = pino_1.default({
-    level: 'fatal',
+    level: process.env.LOG_LEVEL || 'trace',
     prettyPrint: {
         levelFirst: true,
-        translateTime: true
+        translateTime: true,
+        ignore: 'pid,hostname'
     }
 });
 var port = process.env.PORT || 4202;
@@ -20,11 +21,11 @@ var host = process.env.HOSTNAME || 'http://ec2-35-170-243-209.compute-1.amazonaw
 var pi = new Geolocation_1.GeoLocation('10.240.29.204');
 var device = new Particle_1.Particle();
 app.listen(port, function () {
-    logger.info("Listening on " + host + ":" + port + "...");
+    logger.info("[app] Listening on " + host + ":" + port + "...");
 });
 // Allows CORS. To be replaced by proper package or possibly authentication system?
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk?
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
@@ -35,11 +36,11 @@ app.get('/', function (req, res) {
             longitude: -81.67890930175781
         }
     };
-    logger.debug("GET " + req.path);
+    logger.debug("[app] GET " + req.path);
     res.send(JSON.stringify(response));
 });
-process.on('uncaughtException', function (err) {
-    logger.error(err);
+process.on('uncaughtException', function (e) {
+    logger.fatal("[app] " + e);
     process.exit(1);
 });
 module.exports = app;

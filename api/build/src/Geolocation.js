@@ -49,10 +49,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var http = __importStar(require("http"));
 var pino_1 = __importDefault(require("pino"));
 var logger = pino_1.default({
-    level: 'debug',
+    level: process.env.LOG_LEVEL || 'trace',
     prettyPrint: {
         levelFirst: true,
-        translateTime: true
+        translateTime: true,
+        ignore: 'pid,hostname'
     }
 });
 var GeoLocation = /** @class */ (function () {
@@ -63,12 +64,13 @@ var GeoLocation = /** @class */ (function () {
      */
     function GeoLocation(ip, token) {
         var _this = this;
+        this.token = '';
         this.geoIp = null;
         /**
          * Sends HTML request to ipstack.com & saves payload to `this.setAPIJson()`
          */
         this.updateLocation = function () { return __awaiter(_this, void 0, void 0, function () {
-            var returnValue, options;
+            var returnValue, options, req;
             var _this = this;
             return __generator(this, function (_a) {
                 returnValue = '';
@@ -78,26 +80,33 @@ var GeoLocation = /** @class */ (function () {
                     path: "/" + this.ip + "?access_key=" + this.token,
                     agent: false
                 };
-                http.get(options, function (res) {
+                req = http.get(options, function (res) {
                     res.on('data', function (data) {
+                        var parsed = JSON.parse(data);
+                        if (parsed.success != undefined && parsed.success == false) {
+                            switch (parsed.error.code) {
+                                case 101:
+                                    logger.error("[server/Geolocation] " + parsed.error.type + ": " + parsed.error.info);
+                            }
+                        }
+                        logger.debug("[services/Geolocation] " + res.statusCode + ": " + res.statusMessage);
+                        logger.trace('[services/Geolocation] %O', parsed);
                         returnValue += data;
                     });
-                    var authResults = '';
-                    res.statusCode == 200
-                        ? (authResults = 'success')
-                        : (authResults = 'failed');
-                    logger.debug("[Geolocation] HTTP " + res.statusCode + ": Authentication " + authResults);
                     res.on('end', function () {
                         returnValue = JSON.parse(returnValue.toString());
                         _this.setAPIJson(returnValue);
                     });
                 });
+                req.on('error', function (e) {
+                    logger.error("[server/Geolocation] " + e);
+                });
+                req.end();
                 return [2 /*return*/];
             });
         }); };
-        this.token = token || process.env.IPSTACK_ACCESSKEY;
+        this.token = process.env.IPSTACK_ACCESSKEY;
         this.ip = ip || "66.115.169.224"; //test IP
-        logger.debug("Starting GeoLocation API at " + ip + "...");
         this.updateLocation();
     }
     GeoLocation.prototype.getLat = function () {
