@@ -30,7 +30,7 @@ var Particle = /** @class */ (function () {
         var options = "https://api.particle.io/v1/devices?access_token=" + token;
         var req = https.get(options, function (res) {
             res.on('data', function (d) {
-                logger.debug("[services/Particle] " + res.statusCode + ": " + res.statusMessage + ", authentication success");
+                logger.debug("[services/Particle] " + res.statusCode + ": " + res.statusMessage);
                 logger.trace("[services/Particle] " + d.toString());
             });
         });

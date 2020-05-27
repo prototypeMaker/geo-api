@@ -25,7 +25,7 @@ export class Particle {
     const req = https.get(options, res => {
       res.on('data', d => {
         logger.debug(
-          `[services/Particle] ${res.statusCode}: ${res.statusMessage}, authentication success`
+          `[services/Particle] ${res.statusCode}: ${res.statusMessage}`
         );
         logger.trace(`[services/Particle] ${d.toString()}`);
       });
