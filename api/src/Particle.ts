@@ -2,7 +2,7 @@ import * as https from 'https';
 import pino from 'pino';
 
 const logger = pino({
-  level: 'trace',
+  level: process.env.LOG_LEVEL || 'trace',
   prettyPrint: {
     levelFirst: true,
     translateTime: true,
@@ -20,29 +20,22 @@ export class Particle {
 
   private authenticate($url?: string) {
     const token = process.env.TKNParticle;
-    const options: https.RequestOptions = {
-      hostname: 'api.particle.io',
-      timeout: 10000,
-      path: `/v1/devices?access_token=${token}`
-    };
+    const options = `https://api.particle.io/v1/devices?access_token=${token}`;
 
-    https
-      .request(options, res => {
-        let authResults = '';
-        res.statusCode == 200
-          ? (authResults = 'success')
-          : (authResults = 'failed');
-
+    const req = https.get(options, res => {
+      res.on('data', d => {
         logger.debug(
-          `[Particle] HTTP ${res.statusCode}: Authentication ${authResults}`
+          `[services/Particle] ${res.statusCode}: ${res.statusMessage}, authentication success`
         );
-      })
-      .on('connect', response => {
-        logger.debug(`[Particle] ${response}`);
-      })
-      .on('error', response => {
-        logger.error(`[Particle] ${response}`);
+        logger.trace(`[services/Particle] ${d.toString()}`);
       });
+    });
+
+    req.on('error', e => {
+      logger.error(`[server/Particle] ${e}`);
+    });
+
+    req.end();
   }
 
   devices() {

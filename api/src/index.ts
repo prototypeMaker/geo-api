@@ -6,7 +6,7 @@ import { Particle } from './Particle';
 const app = express();
 
 const logger = pino({
-  level: 'trace',
+  level: process.env.LOG_LEVEL || 'trace',
   prettyPrint: {
     levelFirst: true,
     translateTime: true,
@@ -22,7 +22,7 @@ const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
 
 app.listen(port, () => {
-  logger.info(`Listening on ${host}:${port}...`);
+  logger.info(`[app] Listening on ${host}:${port}...`);
 });
 
 // Allows CORS. To be replaced by proper package or possibly authentication system?
@@ -43,13 +43,13 @@ app.get('/', (req, res) => {
     }
   };
 
-  logger.debug(`GET ${req.path}`);
+  logger.debug(`[app] GET ${req.path}`);
 
   res.send(JSON.stringify(response));
 });
 
-process.on('uncaughtException', err => {
-  logger.fatal(err);
+process.on('uncaughtException', e => {
+  logger.fatal(`[app] ${e}`);
   process.exit(1);
 });
 
