@@ -2,6 +2,7 @@ import https from 'https';
 import { stringify } from 'querystring';
 import { Url } from 'url';
 import { IncomingMessage } from 'http';
+import { json } from 'body-parser';
 
 export class Particle {
   private url: string;

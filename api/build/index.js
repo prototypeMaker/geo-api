@@ -8,6 +8,10 @@ var port = process.env.PORT || 4202;
 var host = process.env.HOSTNAME || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
 var pi = new Geolocation_1.GeoLocation('38.132.156.175');
 var device = new Particle_1.Particle();
+// Grabs GeoIP
+setTimeout(function () {
+    // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
+}, 5000);
 app.listen(port, function () {
     console.log("Listening on " + host + ":" + port + "..");
 });
@@ -18,7 +22,13 @@ app.use(function (req, res, next) {
     next();
 });
 app.get('/', function (req, res) {
-    console.log('Success');
+    var response = {
+        items: {
+            latitude: 36.214151845703125,
+            longitude: -81.67890930175781
+        }
+    };
+    res.send(JSON.stringify(response));
 });
 process.on('uncaughtException', function (err) {
     console.log(err);
