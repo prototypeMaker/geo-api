@@ -2,7 +2,7 @@ import https from 'https';
 import { stringify } from 'querystring';
 import { Url } from 'url';
 import { IncomingMessage } from 'http';
-import { json } from 'body-parser';
+const bent = require('bent');
 
 export class Particle {
   private url: string;
@@ -14,7 +14,7 @@ export class Particle {
     this.devices();
   }
 
-  authenticate($url?: string) {
+  async authenticate($url?: string) {
     const options: string = `${this.url}?access_token=${this.token}`;
     https
       .get(options, (res) => {
@@ -29,8 +29,21 @@ export class Particle {
       });
   }
 
-  devices() {
-      var url = `${this.url}/?access_token=${this.token}`
-      https.get(url, (res: IncomingMessage) => {res.read();});
+  async devices() {
+    const getJSON = bent('json')  
+    var url = `${this.url}/?access_token=${this.token}`
+    var returnValue;
+    var devices = await getJSON(`${url}`);
+    
+    // returns array of devices 
+    return returnValue;
   }
+ 
+  async deviceIP($id: string)
+ {
+  const getJSON = bent('json');  
+  var url = `${this.url}/${$id}/?access_token=${this.token}`
+  var devices = await getJSON(url);
+  return devices[0].last_ip_address;
+ }
 }
