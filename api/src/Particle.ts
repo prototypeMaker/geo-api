@@ -1,35 +1,41 @@
 import * as https from 'https';
-import { stringify } from 'querystring';
-import { Url } from 'url';
-import { IncomingMessage } from 'http';
-import { json } from 'body-parser';
+import pino from 'pino';
+
+const logger = pino({
+  level: process.env.LOG_LEVEL || 'trace',
+  prettyPrint: {
+    levelFirst: true,
+    translateTime: true,
+    ignore: 'pid,hostname'
+  }
+});
 
 export class Particle {
   private url: string;
-  constructor();
+
   constructor($url?: string) {
     this.url = $url || `https://api.particle.io/v1/devices`;
     this.authenticate();
   }
 
-  authenticate($url?: string) {
+  private authenticate($url?: string) {
     const token = process.env.TKNParticle;
-    const options: string = `${this.url}?access_token=${token}`;
-    https
-      .request(options, res => {
-        let authResults = 'none';
-        res.statusCode == 200
-          ? (authResults = 'success')
-          : (authResults = 'failed');
-        console.log(
-          `[Particle] HTTP ${res.statusCode}: Authentication ${authResults}`
+    const options = `https://api.particle.io/v1/devices?access_token=${token}`;
+
+    const req = https.get(options, res => {
+      res.on('data', d => {
+        logger.debug(
+          `[services/Particle] ${res.statusCode}: ${res.statusMessage}`
         );
-      })
-      .on('error', error => {
-        console.log(
-          `[Particle] Error attempting to Authentication + please check your API key`
-        );
+        logger.trace(`[services/Particle] ${d.toString()}`);
       });
+    });
+
+    req.on('error', e => {
+      logger.error(`[server/Particle] ${e}`);
+    });
+
+    req.end();
   }
 
   devices() {

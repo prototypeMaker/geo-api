@@ -1,8 +1,18 @@
-import { GeoLocation } from './Geolocation';
 import express from 'express';
+import pino from 'pino';
+import { GeoLocation } from './Geolocation';
 import { Particle } from './Particle';
 
 const app = express();
+
+const logger = pino({
+  level: process.env.LOG_LEVEL || 'trace',
+  prettyPrint: {
+    levelFirst: true,
+    translateTime: true,
+    ignore: 'pid,hostname'
+  }
+});
 
 const port = process.env.PORT || 4202;
 const host =
@@ -11,18 +21,13 @@ const host =
 const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
 
-// Grabs GeoIP
-setTimeout(() => {
-  // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
-}, 5000);
-
 app.listen(port, () => {
-  console.log(`Listening on ${host}:${port}..`);
+  logger.info(`[app] Listening on ${host}:${port}...`);
 });
 
 // Allows CORS. To be replaced by proper package or possibly authentication system?
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk?
+  res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
@@ -38,11 +43,13 @@ app.get('/', (req, res) => {
     }
   };
 
+  logger.debug(`[app] GET ${req.path}`);
+
   res.send(JSON.stringify(response));
 });
 
-process.on('uncaughtException', err => {
-  console.log(err);
+process.on('uncaughtException', e => {
+  logger.fatal(`[app] ${e}`);
   process.exit(1);
 });
 

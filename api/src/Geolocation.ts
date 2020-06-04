@@ -1,7 +1,17 @@
 import * as http from 'http';
+import pino from 'pino';
+
+const logger = pino({
+  level: process.env.LOG_LEVEL || 'trace',
+  prettyPrint: {
+    levelFirst: true,
+    translateTime: true,
+    ignore: 'pid,hostname'
+  }
+});
 
 export class GeoLocation {
-  private token: string | undefined;
+  private token: string | undefined = '';
   private ip: string | undefined;
   private geoIp: any = null;
 
@@ -11,21 +21,20 @@ export class GeoLocation {
    * @param {string} token - The bearer token for authorization
    */
   constructor(ip?: string, token?: string) {
-    this.token = token || process.env.IPSTACK_ACCESSKEY;
-    this.ip = ip || `66.115.169.224`; //test IP
+    this.token = process.env.IPSTACK_ACCESSKEY;
 
-    console.timeStamp('Starting GeoLocation api');
+    this.ip = ip || `66.115.169.224`; //test IP
 
     this.updateLocation();
   }
 
   getLat(): number {
-    console.timeStamp(`Get Lat: ${this.geoIp.latitude}`);
+    logger.debug(`Getting ${this.ip}'s latitude: ${this.geoIp.latitude}`);
     return this.geoIp.latitude;
   }
 
   getLong(): number {
-    console.log(`Get Longitude: ${this.geoIp.longitude}`);
+    logger.debug(`Getting ${this.ip}'s longitude: ${this.geoIp.longitude}`);
     return this.geoIp.longitude;
   }
 
@@ -50,21 +59,38 @@ export class GeoLocation {
       agent: false
     };
 
-    http.get(options, (res: http.IncomingMessage) => {
-      res.on('data', (data: any) => {
+    const req = http.get(options, res => {
+      res.on('data', data => {
+        const parsed = JSON.parse(data);
+
+        if (parsed.success != undefined && parsed.success == false) {
+          switch (parsed.error.code) {
+            case 101:
+              logger.error(
+                `[server/Geolocation] ${parsed.error.type}: ${parsed.error.info}`
+              );
+          }
+        }
+
+        logger.debug(
+          `[services/Geolocation] ${res.statusCode}: ${res.statusMessage}`
+        );
+
+        logger.trace('[services/Geolocation] %O', parsed);
+
         returnValue += data;
       });
-      let authResults = 'none';
-      res.statusCode == 200
-        ? (authResults = 'success')
-        : (authResults = 'failed');
-      console.log(
-        `[Geolocation] HTTP ${res.statusCode}: Authentication ${authResults}`
-      );
+
       res.on('end', () => {
         returnValue = JSON.parse(returnValue.toString());
         this.setAPIJson(returnValue);
       });
     });
+
+    req.on('error', e => {
+      logger.error(`[server/Geolocation] ${e}`);
+    });
+
+    req.end();
   };
 }
