@@ -39,65 +39,72 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Particle = void 0;
 var https_1 = __importDefault(require("https"));
-var bent = require('bent');
+var bent_1 = __importDefault(require("bent"));
+var pino_1 = __importDefault(require("pino"));
+var logger = pino_1.default({
+    level: process.env.LOG_LEVEL || 'trace',
+    prettyPrint: {
+        levelFirst: true,
+        translateTime: true,
+        ignore: 'pid,hostname'
+    }
+});
 var Particle = /** @class */ (function () {
     function Particle(_$deviceID) {
-        this.token = process.env.TKNParticle;
-        this.url = "https://api.particle.io/v1/devices";
-        this.authenticate();
-        this.devices();
+        this.token = process.env.TKNParticle || '';
+        this.getJSON = bent_1.default('json');
+        var hostname = "https://api.particle.io/v1/devices";
+        this.authenticate(hostname);
+        this.devices(hostname);
     }
-    Particle.prototype.authenticate = function ($url) {
+    Particle.prototype.authenticate = function (hostname) {
         return __awaiter(this, void 0, void 0, function () {
-            var options;
+            var options, req;
             return __generator(this, function (_a) {
-                options = this.url + "?access_token=" + this.token;
-                https_1.default
+                options = hostname + "?access_token=" + this.token;
+                req = https_1.default
                     .get(options, function (res) {
-                    var authResults = res.statusCode == 200 ? (authResults = 'success') : (authResults = 'failed');
-                    console.log("[Particle] HTTP " + res.statusCode + ": Authentication " + authResults);
+                    var authResults = res.statusCode == 200
+                        ? (authResults = 'success')
+                        : (authResults = 'failed');
+                    logger.debug("[services/Particle] " + res.statusCode + ": " + res.statusMessage);
+                    logger.trace("[services/Particle] " + res.toString());
                 })
                     .on('error', function (error) {
-                    console.log("[Particle] Error attempting to authenticate url \"" + options + "\" \n " + error);
+                    logger.debug("[services/Particle] " + error.name + ": " + error.message);
+                    logger.trace("[services/Particle] " + error.toString());
                 });
+                req.on('error', function (e) {
+                    logger.error("[server/Particle] " + e);
+                });
+                req.end();
                 return [2 /*return*/];
             });
         });
     };
-    Particle.prototype.devices = function () {
+    Particle.prototype.devices = function (hostname) {
         return __awaiter(this, void 0, void 0, function () {
-            var getJSON, url, devices, _i, devices_1, deviceArray;
+            var url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        getJSON = bent('json');
-                        url = this.url + "/?access_token=" + this.token;
-                        return [4 /*yield*/, getJSON("" + url)];
-                    case 1:
-                        devices = _a.sent();
-                        for (_i = 0, devices_1 = devices; _i < devices_1.length; _i++) {
-                            deviceArray = devices_1[_i];
-                            console.log(deviceArray.name);
-                        }
-                        return [2 /*return*/];
+                        url = hostname + "/?access_token=" + this.token;
+                        return [4 /*yield*/, this.getJSON("" + url)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    Particle.prototype.deviceIP = function ($id) {
+    Particle.prototype.deviceIP = function (hostname, $id) {
         return __awaiter(this, void 0, void 0, function () {
-            var getJSON, url, devices;
+            var url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        getJSON = bent('json');
-                        url = this.url + "/" + $id + "/?access_token=" + this.token;
-                        return [4 /*yield*/, getJSON(url)];
-                    case 1:
-                        devices = _a.sent();
-                        return [2 /*return*/, devices[0].last_ip_address];
+                        url = hostname + "/" + $id + "/?access_token=" + this.token;
+                        return [4 /*yield*/, this.getJSON(url)[0].last_ip_address];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });

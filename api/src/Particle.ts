@@ -1,49 +1,65 @@
 import https from 'https';
-import { stringify } from 'querystring';
-import { Url } from 'url';
-import { IncomingMessage } from 'http';
-const bent = require('bent');
+import bent, { RequestFunction, Json } from 'bent';
+import pino from 'pino';
+
+const logger = pino({
+  level: process.env.LOG_LEVEL || 'trace',
+  prettyPrint: {
+    levelFirst: true,
+    translateTime: true,
+    ignore: 'pid,hostname'
+  }
+});
 
 export class Particle {
-  private url: string;
-  private token = process.env.TKNParticle;
-  constructor();
+  private token: string = process.env.TKNParticle || '';
+  private getJSON: RequestFunction<Json> = bent('json');
+
   constructor(_$deviceID?: string) {
-    this.url =`https://api.particle.io/v1/devices`;
-    this.authenticate();
-    this.devices();
+    const hostname = `https://api.particle.io/v1/devices`;
+
+    this.authenticate(hostname);
+    this.devices(hostname);
   }
 
-  async authenticate($url?: string) {
-    const options: string = `${this.url}?access_token=${this.token}`;
-    https
-      .get(options, (res) => {
-        var authResults: string = res.statusCode == 200 ? (authResults = 'success') : (authResults = 'failed');
-        console.log(`[Particle] HTTP ${res.statusCode}: Authentication ${authResults}`);
+  async authenticate(hostname: string) {
+    const options: string = `${hostname}?access_token=${this.token}`;
+    const req = https
+      .get(options, res => {
+        var authResults: string =
+          res.statusCode == 200
+            ? (authResults = 'success')
+            : (authResults = 'failed');
+        logger.debug(
+          `[services/Particle] ${res.statusCode}: ${res.statusMessage}`
+        );
 
+        logger.trace(`[services/Particle] ${res.toString()}`);
       })
       .on('error', error => {
-        console.log(
-          `[Particle] Error attempting to authenticate url "${options}" \n ${error}`
-        );
+        logger.debug(`[services/Particle] ${error.name}: ${error.message}`);
+
+        logger.trace(`[services/Particle] ${error.toString()}`);
       });
+
+    req.on('error', e => {
+      logger.error(`[server/Particle] ${e}`);
+    });
+
+    req.end();
   }
 
-  async devices() {
-    const getJSON = bent('json')  
-    var url = `${this.url}/?access_token=${this.token}`
-    var returnValue;
-    var devices = await getJSON(`${url}`);
-    
-    // returns array of devices 
-    return returnValue;
+  async devices(hostname: string) {
+    const url = `${hostname}/?access_token=${this.token}`;
+
+    return await this.getJSON(`${url}`);
   }
- 
-  async deviceIP($id: string)
- {
-  const getJSON = bent('json');  
-  var url = `${this.url}/${$id}/?access_token=${this.token}`
-  var devices = await getJSON(url);
-  return devices[0].last_ip_address;
- }
+
+  async deviceIP(hostname: string, $id: string) {
+    const url = `${hostname}/${$id}/?access_token=${this.token}`;
+
+    const json = await this.getJSON(url);
+
+    return json[0].last_ip_address;
+  }
 }
