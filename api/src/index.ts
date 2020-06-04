@@ -5,7 +5,8 @@ import { Particle } from './Particle';
 const app = express();
 
 const port = process.env.PORT || 4202;
-const host = process.env.HOST || 'http://localhost';
+const host =
+  process.env.HOSTNAME || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
 
 const pi = new GeoLocation('10.240.29.204');
 const device = new Particle();
@@ -15,15 +16,13 @@ setTimeout(() => {
   // console.log(`${JSON.stringify(pi.getGeoIp(), null, 4)}`);
 }, 5000);
 
-
-
 app.listen(port, () => {
   console.log(`Listening on ${host}:${port}..`);
-})
+});
 
 // Allows CORS. To be replaced by proper package or possibly authentication system?
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk? no
+  res.header('Access-Control-Allow-Origin', '*'); // having a wildcard here potientially gives a security risk?
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
