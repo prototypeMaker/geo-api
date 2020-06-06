@@ -12,16 +12,16 @@ const logger = pino({
 });
 
 export class Particle {
-  constructor(_$deviceID?: string) {
-    const hostname = `https://api.particle.io/v1/devices`;
-    const token = process.env.TKNParticle || '';
+  private hostname = `https://api.particle.io/v1/devices`;
+  private token = process.env.TKNParticle || '';
 
-    this.authenticate(hostname, token);
-    this.devices(hostname, token);
+  constructor() {
+    this.authenticate();
+    this.devices();
   }
 
-  async authenticate(hostname: string, token: string) {
-    const options: string = `${hostname}?access_token=${token}`;
+  async authenticate() {
+    const options: string = `${this.hostname}?access_token=${this.token}`;
     const req = https
       .get(options, res => {
         var authResults: string =
@@ -47,16 +47,16 @@ export class Particle {
     req.end();
   }
 
-  async devices(hostname: string, token: string) {
-    const url = `${hostname}/?access_token=${token}`;
+  async devices() {
+    const url = `${this.hostname}/?access_token=${this.token}`;
 
     const getJSON = bent('json');
 
     return await getJSON(`${url}`);
   }
 
-  async deviceIP(hostname: string, token: string, id?: string) {
-    const url = `${hostname}/${id}/?access_token=${token}`;
+  async deviceIP(id: string) {
+    const url = `${this.hostname}/${id}/?access_token=${this.token}`;
 
     const getJSON = bent('json');
 

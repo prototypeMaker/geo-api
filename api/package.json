@@ -8,8 +8,7 @@
     "test": "npm run build && mocha -r dotenv/config build/test/*.js",
     "build": "tsc",
     "tsc": "tsc",
-    "debug": "npm run build && nodemon ./build/index.js",
-    "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts"
+    "debug": "ts-node-dev --respawn --transpileOnly ./src/index.ts"
   },
   "repository": {
     "type": "git",

@@ -18,9 +18,6 @@ const port = process.env.PORT || 4202;
 const host =
   process.env.HOSTNAME || 'http://ec2-35-170-243-209.compute-1.amazonaws.com';
 
-const pi = new GeoLocation('38.132.156.175');
-const device = new Particle();
-
 app.listen(port, () => {
   logger.info(`[app] Listening on ${host}:${port}...`);
 });
@@ -36,13 +33,25 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  
   const response = {
     items: {
       latitude: 36.214151845703125,
       longitude: -81.67890930175781
     }
   };
+
+  // will web request periodically every few seconds, or the api push the data?
+
+  // const device = new Particle();
+
+  // const ip = device.deviceIP();
+
+  // const pi = new GeoLocation(ip);
+
+  // const location = pi.getLatLong();
+
+  // response.items.latitude = location.latitude;
+  // response.items.longitude = location.longitude;
 
   logger.debug(`[app] GET ${req.path}`);
 
