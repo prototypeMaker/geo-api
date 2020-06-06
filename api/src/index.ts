@@ -40,19 +40,6 @@ app.get('/', (req, res) => {
     }
   };
 
-  // will web request periodically every few seconds, or the api push the data?
-
-  // const device = new Particle();
-
-  // const ip = device.deviceIP();
-
-  // const pi = new GeoLocation(ip);
-
-  // const location = pi.getLatLong();
-
-  // response.items.latitude = location.latitude;
-  // response.items.longitude = location.longitude;
-
   logger.debug(`[app] GET ${req.path}`);
 
   res.send(JSON.stringify(response));
