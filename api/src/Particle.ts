@@ -1,4 +1,5 @@
-import * as https from 'https';
+import https from 'https';
+import bent from 'bent';
 import pino from 'pino';
 
 const logger = pino({
@@ -11,25 +12,33 @@ const logger = pino({
 });
 
 export class Particle {
-  private url: string;
+  private hostname = `https://api.particle.io/v1/devices`;
+  private token = process.env.TKNParticle || '';
 
-  constructor($url?: string) {
-    this.url = $url || `https://api.particle.io/v1/devices`;
+  constructor() {
     this.authenticate();
+    this.devices();
   }
 
-  private authenticate($url?: string) {
-    const token = process.env.TKNParticle;
-    const options = `https://api.particle.io/v1/devices?access_token=${token}`;
-
-    const req = https.get(options, res => {
-      res.on('data', d => {
+  async authenticate() {
+    const options: string = `${this.hostname}?access_token=${this.token}`;
+    const req = https
+      .get(options, res => {
+        var authResults: string =
+          res.statusCode == 200
+            ? (authResults = 'success')
+            : (authResults = 'failed');
         logger.debug(
           `[services/Particle] ${res.statusCode}: ${res.statusMessage}`
         );
-        logger.trace(`[services/Particle] ${d.toString()}`);
+
+        logger.trace(`[services/Particle] ${res.toString()}`);
+      })
+      .on('error', error => {
+        logger.debug(`[services/Particle] ${error.name}: ${error.message}`);
+
+        logger.trace(`[services/Particle] ${error.toString()}`);
       });
-    });
 
     req.on('error', e => {
       logger.error(`[server/Particle] ${e}`);
@@ -38,8 +47,21 @@ export class Particle {
     req.end();
   }
 
-  devices() {
-    var url = `https://api.particle.io/v1/devices/`;
-    this.authenticate(url);
+  async devices() {
+    const url = `${this.hostname}/?access_token=${this.token}`;
+
+    const getJSON = bent('json');
+
+    return await getJSON(`${url}`);
+  }
+
+  async deviceIP(id: string) {
+    const url = `${this.hostname}/${id}/?access_token=${this.token}`;
+
+    const getJSON = bent('json');
+
+    const json = await getJSON(url);
+
+    return json[0].last_ip_address;
   }
 }
