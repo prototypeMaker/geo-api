@@ -77,7 +77,6 @@ app.get('/', (req, res) => {
   deviceLocations.then(locations => {
     res.send(JSON.stringify(locations));
   });
-  // res.send(JSON.stringify(response));
 });
 
 process.on('uncaughtException', e => {
