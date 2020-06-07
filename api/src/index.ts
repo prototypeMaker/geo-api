@@ -44,11 +44,9 @@ app.get('/', (req, res) => {
     response.forEach((element: any) => {
       const { id, last_ip_address } = element;
 
-      geoLocation.setIp(last_ip_address);
+      geoLocation.deviceIp = last_ip_address;
 
-      geoLocation.updateLocation();
-
-      const loc = geoLocation.getLocation();
+      const loc = geoLocation.location;
 
       const location = {
         latitude: loc.longitude,
@@ -68,6 +66,7 @@ app.get('/', (req, res) => {
 
   deviceLocations.then(locations => {
     const body = { items: locations[0].location };
+
     res.send(JSON.stringify(body)); // works for one device for now
   });
 });

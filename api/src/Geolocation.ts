@@ -28,26 +28,26 @@ export class GeoLocation {
     this.updateLocation();
   }
 
-  getLocation(): { latitude: number; longitude: number } {
+  get location(): { latitude: number; longitude: number } {
     const x = {
       latitude: 0,
       longitude: 0
     };
 
-    x.latitude = this.getLat();
-    x.longitude = this.getLong();
+    x.latitude = this.latitude;
+    x.longitude = this.longitude;
 
     return x;
   }
 
-  getLat(): number {
+  get latitude(): number {
     logger.trace(
       `[services/Geolocation]: Getting ${this.ip}'s latitude: ${this.geoIp.latitude}`
     );
     return this.geoIp.latitude;
   }
 
-  getLong(): number {
+  get longitude(): number {
     logger.trace(
       `[services/Geolocation]: Getting ${this.ip}'s longitude: ${this.geoIp.longitude}`
     );
@@ -58,12 +58,21 @@ export class GeoLocation {
     this.geoIp = newValue;
   }
 
-  setIp(ip: string) {
+  set geoLocation(ip: string) {
     this.ip = ip;
+    this.updateLocation();
   }
 
-  getGeoIp(): number {
+  get geoLocation(): string {
     return this.geoIp;
+  }
+
+  /**
+   * Assigns the GeoLocation api a new IP and updates the location
+   */
+  set deviceIp(ip: string) {
+    this.ip = ip;
+    this.updateLocation();
   }
 
   /**
@@ -79,7 +88,7 @@ export class GeoLocation {
       agent: false
     };
 
-    const req = http.get(options, res => {
+    const req = await http.get(options, res => {
       res.on('data', data => {
         const parsed = JSON.parse(data);
 
@@ -108,7 +117,7 @@ export class GeoLocation {
     });
 
     req.on('error', e => {
-      logger.error(`[server/Geolocation] ${e}`);
+      logger.error(`[server/Geolocation] %O`, e);
     });
 
     req.end();
