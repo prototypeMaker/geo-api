@@ -12,7 +12,7 @@ const logger = pino({
 
 export class GeoLocation {
   private token: string | undefined = '';
-  private ip: string | undefined;
+  private ip: string | undefined = '';
   private geoIp: any = null;
 
   /**
@@ -20,26 +20,47 @@ export class GeoLocation {
    * @param {string} ip - The IP address of the given device
    * @param {string} token - The bearer token for authorization
    */
-  constructor(ip?: string, token?: string) {
-    this.token = process.env.IPSTACK_ACCESSKEY;
+  constructor(ip?: string) {
+    this.token =
+      process.env.IPSTACK_ACCESSKEY || 'd7b3fca89ad66271efaa93d4d483939d';
 
     this.ip = ip || `66.115.169.224`; //test IP
 
     this.updateLocation();
   }
 
+  getLocation(): { latitude: number; longitude: number } {
+    const x = {
+      latitude: 0,
+      longitude: 0
+    };
+
+    x.latitude = this.getLat();
+    x.longitude = this.getLong();
+
+    return x;
+  }
+
   getLat(): number {
-    logger.debug(`Getting ${this.ip}'s latitude: ${this.geoIp.latitude}`);
+    logger.trace(
+      `[services/Geolocation]: Getting ${this.ip}'s latitude: ${this.geoIp.latitude}`
+    );
     return this.geoIp.latitude;
   }
 
   getLong(): number {
-    logger.debug(`Getting ${this.ip}'s longitude: ${this.geoIp.longitude}`);
+    logger.trace(
+      `[services/Geolocation]: Getting ${this.ip}'s longitude: ${this.geoIp.longitude}`
+    );
     return this.geoIp.longitude;
   }
 
   setAPIJson(newValue: string) {
     this.geoIp = newValue;
+  }
+
+  setIp(ip: string) {
+    this.ip = ip;
   }
 
   getGeoIp(): number {

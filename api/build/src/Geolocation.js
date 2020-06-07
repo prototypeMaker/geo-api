@@ -62,9 +62,10 @@ var GeoLocation = /** @class */ (function () {
      * @param {string} ip - The IP address of the given device
      * @param {string} token - The bearer token for authorization
      */
-    function GeoLocation(ip, token) {
+    function GeoLocation(ip) {
         var _this = this;
         this.token = '';
+        this.ip = '';
         this.geoIp = null;
         /**
          * Sends HTML request to ipstack.com & saves payload to `this.setAPIJson()`
@@ -105,7 +106,8 @@ var GeoLocation = /** @class */ (function () {
                 return [2 /*return*/];
             });
         }); };
-        this.token = process.env.IPSTACK_ACCESSKEY;
+        this.token =
+            process.env.IPSTACK_ACCESSKEY || 'd7b3fca89ad66271efaa93d4d483939d';
         this.ip = ip || "66.115.169.224"; //test IP
         this.updateLocation();
     }

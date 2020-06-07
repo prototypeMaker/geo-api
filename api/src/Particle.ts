@@ -13,16 +13,21 @@ const logger = pino({
 
 export class Particle {
   private hostname = `https://api.particle.io/v1/devices`;
-  private token = process.env.TKNParticle || '';
+  private token =
+    process.env.TKNParticle || '3ca0e1c81acf44a9e44ff4436dd70fe012684071';
 
   constructor() {
     this.authenticate();
-    this.devices();
   }
 
-  async authenticate() {
-    const options: string = `${this.hostname}?access_token=${this.token}`;
-    const req = https
+  private async authenticate() {
+    const options: https.RequestOptions = {
+      hostname: 'api.particle.io',
+      path: `/v1/devices?access_token=${this.token}`,
+      timeout: 5000
+    };
+
+    const req = https // does await need to be on this?
       .get(options, res => {
         var authResults: string =
           res.statusCode == 200
@@ -31,13 +36,9 @@ export class Particle {
         logger.debug(
           `[services/Particle] ${res.statusCode}: ${res.statusMessage}`
         );
-
-        logger.trace(`[services/Particle] ${res.toString()}`);
       })
       .on('error', error => {
-        logger.debug(`[services/Particle] ${error.name}: ${error.message}`);
-
-        logger.trace(`[services/Particle] ${error.toString()}`);
+        logger.error(`[services/Particle] ${error.name}: ${error.message}`);
       });
 
     req.on('error', e => {
@@ -47,21 +48,27 @@ export class Particle {
     req.end();
   }
 
-  async devices() {
+  async getAllDevices() {
     const url = `${this.hostname}/?access_token=${this.token}`;
 
     const getJSON = bent('json');
 
-    return await getJSON(`${url}`);
+    const json = await getJSON(`${url}`);
+
+    logger.trace('[services/Particle] %O', json);
+
+    return json;
   }
 
-  async deviceIP(id: string) {
+  async getDeviceById(id: string) {
     const url = `${this.hostname}/${id}/?access_token=${this.token}`;
 
     const getJSON = bent('json');
 
     const json = await getJSON(url);
 
-    return json[0].last_ip_address;
+    logger.trace('[services/Particle] %O', json);
+
+    return json[0];
   }
 }
