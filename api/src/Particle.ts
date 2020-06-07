@@ -13,8 +13,7 @@ const logger = pino({
 
 export class Particle {
   private hostname = `https://api.particle.io/v1/devices`;
-  private token =
-    process.env.TKNParticle || '3ca0e1c81acf44a9e44ff4436dd70fe012684071';
+  private token = process.env.TKNParticle || '';
 
   constructor() {
     this.authenticate();
@@ -53,11 +52,11 @@ export class Particle {
 
     const getJSON = bent('json');
 
-    const json = await getJSON(`${url}`);
+    return await getJSON(`${url}`).then(res => {
+      logger.trace('[services/Particle] %O', res);
 
-    logger.trace('[services/Particle] %O', json);
-
-    return json;
+      return res;
+    });
   }
 
   async getDeviceById(id: string) {
@@ -65,10 +64,10 @@ export class Particle {
 
     const getJSON = bent('json');
 
-    const json = await getJSON(url);
+    return await getJSON(url).then(res => {
+      logger.trace('[services/Particle] %O', res);
 
-    logger.trace('[services/Particle] %O', json);
-
-    return json[0];
+      return res[0];
+    });
   }
 }

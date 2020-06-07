@@ -21,8 +21,7 @@ export class GeoLocation {
    * @param {string} token - The bearer token for authorization
    */
   constructor(ip?: string) {
-    this.token =
-      process.env.IPSTACK_ACCESSKEY || 'd7b3fca89ad66271efaa93d4d483939d';
+    this.token = process.env.IPSTACK_ACCESSKEY || '';
 
     this.ip = ip || `66.115.169.224`; //test IP
 

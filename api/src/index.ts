@@ -35,14 +35,6 @@ app.use((req, res, next) => {
   next();
 });
 
-interface Device {
-  id: string;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
-}
-
 app.get('/', (req, res) => {
   const devices = particle.getAllDevices().then(response => response);
 
@@ -85,6 +77,14 @@ process.on('uncaughtException', e => {
 });
 
 module.exports = app;
+
+interface Device {
+  id: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+}
 
 // Reference
 // https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
