@@ -67,7 +67,8 @@ app.get('/', (req, res) => {
   logger.debug(`[app] GET ${req.path}`);
 
   deviceLocations.then(locations => {
-    res.send(JSON.stringify(locations));
+    const body = { items: locations[0].location };
+    res.send(JSON.stringify(body)); // works for one device for now
   });
 });
 
