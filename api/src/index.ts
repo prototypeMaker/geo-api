@@ -44,13 +44,6 @@ interface Device {
 }
 
 app.get('/', (req, res) => {
-  const response = {
-    items: {
-      latitude: 36.214151845703125,
-      longitude: -81.67890930175781
-    }
-  };
-
   const devices = particle.getAllDevices().then(response => response);
 
   const deviceLocations: Promise<Device[]> = devices.then(response => {
