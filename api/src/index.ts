@@ -46,11 +46,9 @@ app.get('/', (req, res) => {
 
       geoLocation.deviceIp = last_ip_address;
 
-      const loc = geoLocation.location;
-
       const location = {
-        latitude: loc.longitude,
-        longitude: loc.latitude
+        latitude: geoLocation.location.longitude,
+        longitude: geoLocation.location.latitude
       };
 
       devices.push({

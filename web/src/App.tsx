@@ -12,23 +12,30 @@ class App extends React.Component {
     error: ''
   };
 
-  componentDidMount() {
-    fetch('http://localhost:4202/')
-      .then(res => res.json())
-      .then(
-        result => {
-          this.setState({
-            isLoaded: true,
-            items: result.items
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+  private async fetchLocation() {
+    let response = await fetch('http://localhost:4202/');
+
+    return await response.json();
+  }
+
+  async componentDidMount() {
+    // setInterval(
+    this.fetchLocation().then(
+      result => {
+        this.setState({
+          isLoaded: true,
+          items: result.items
+        });
+      },
+      error => {
+        this.setState({
+          isLoaded: true,
+          error
+        });
+      }
+    );
+    //   5000
+    // );
   }
 
   render() {
