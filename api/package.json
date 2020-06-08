@@ -49,6 +49,7 @@
     "dotenv": "^8.2.0",
     "mocha": "^6.2.3",
     "pino": "^6.3.1",
+    "pino-pretty": "^4.0.0",
     "request": "^2.88.2",
     "supertest": "^4.0.2"
   }

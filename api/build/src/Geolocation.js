@@ -74,57 +74,101 @@ var GeoLocation = /** @class */ (function () {
             var returnValue, options, req;
             var _this = this;
             return __generator(this, function (_a) {
-                returnValue = '';
-                options = {
-                    hostname: 'api.ipstack.com',
-                    port: 80,
-                    path: "/" + this.ip + "?access_key=" + this.token,
-                    agent: false
-                };
-                req = http.get(options, function (res) {
-                    res.on('data', function (data) {
-                        var parsed = JSON.parse(data);
-                        if (parsed.success != undefined && parsed.success == false) {
-                            switch (parsed.error.code) {
-                                case 101:
-                                    logger.error("[server/Geolocation] " + parsed.error.type + ": " + parsed.error.info);
-                            }
-                        }
-                        logger.debug("[services/Geolocation] " + res.statusCode + ": " + res.statusMessage);
-                        logger.trace('[services/Geolocation] %O', parsed);
-                        returnValue += data;
-                    });
-                    res.on('end', function () {
-                        returnValue = JSON.parse(returnValue.toString());
-                        _this.setAPIJson(returnValue);
-                    });
-                });
-                req.on('error', function (e) {
-                    logger.error("[server/Geolocation] " + e);
-                });
-                req.end();
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        returnValue = '';
+                        options = {
+                            hostname: 'api.ipstack.com',
+                            port: 80,
+                            path: "/" + this.ip + "?access_key=" + this.token,
+                            agent: false
+                        };
+                        return [4 /*yield*/, http.get(options, function (res) {
+                                res.on('data', function (data) {
+                                    var parsed = JSON.parse(data);
+                                    if (parsed.success != undefined && parsed.success == false) {
+                                        switch (parsed.error.code) {
+                                            case 101:
+                                                logger.error("[server/Geolocation] " + parsed.error.type + ": " + parsed.error.info);
+                                        }
+                                    }
+                                    logger.debug("[services/Geolocation] " + res.statusCode + ": " + res.statusMessage);
+                                    logger.trace('[services/Geolocation] %O', parsed);
+                                    returnValue += data;
+                                });
+                                res.on('end', function () {
+                                    returnValue = JSON.parse(returnValue.toString());
+                                    _this.setAPIJson(returnValue);
+                                });
+                            })];
+                    case 1:
+                        req = _a.sent();
+                        req.on('error', function (e) {
+                            logger.error("[server/Geolocation] %O", e);
+                        });
+                        req.end();
+                        return [2 /*return*/];
+                }
             });
         }); };
-        this.token =
-            process.env.IPSTACK_ACCESSKEY || 'd7b3fca89ad66271efaa93d4d483939d';
+        this.token = process.env.IPSTACK_ACCESSKEY || '';
         this.ip = ip || "66.115.169.224"; //test IP
         this.updateLocation();
     }
-    GeoLocation.prototype.getLat = function () {
-        logger.debug("Getting " + this.ip + "'s latitude: " + this.geoIp.latitude);
-        return this.geoIp.latitude;
-    };
-    GeoLocation.prototype.getLong = function () {
-        logger.debug("Getting " + this.ip + "'s longitude: " + this.geoIp.longitude);
-        return this.geoIp.longitude;
-    };
+    Object.defineProperty(GeoLocation.prototype, "location", {
+        get: function () {
+            var x = {
+                latitude: 0,
+                longitude: 0
+            };
+            x.latitude = this.latitude;
+            x.longitude = this.longitude;
+            return x;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GeoLocation.prototype, "latitude", {
+        get: function () {
+            logger.trace("[services/Geolocation]: Getting " + this.ip + "'s latitude: " + this.geoIp.latitude);
+            return this.geoIp.latitude;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GeoLocation.prototype, "longitude", {
+        get: function () {
+            logger.trace("[services/Geolocation]: Getting " + this.ip + "'s longitude: " + this.geoIp.longitude);
+            return this.geoIp.longitude;
+        },
+        enumerable: true,
+        configurable: true
+    });
     GeoLocation.prototype.setAPIJson = function (newValue) {
         this.geoIp = newValue;
     };
-    GeoLocation.prototype.getGeoIp = function () {
-        return this.geoIp;
-    };
+    Object.defineProperty(GeoLocation.prototype, "geoLocation", {
+        get: function () {
+            return this.geoIp;
+        },
+        set: function (ip) {
+            this.ip = ip;
+            this.updateLocation();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GeoLocation.prototype, "deviceIp", {
+        /**
+         * Assigns the GeoLocation api a new IP and updates the location
+         */
+        set: function (ip) {
+            this.ip = ip;
+            this.updateLocation();
+        },
+        enumerable: true,
+        configurable: true
+    });
     return GeoLocation;
 }());
 exports.GeoLocation = GeoLocation;
