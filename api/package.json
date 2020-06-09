@@ -8,7 +8,7 @@
     "test": "npm run build && mocha -r dotenv/config build/test/*.js",
     "build": "tsc",
     "tsc": "tsc",
-    "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts"
+    "debug": "ts-node-dev --respawn --transpileOnly ./src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -39,12 +39,16 @@
   },
   "test-unit": "NODE_ENV=test mocha '/**/*.spec.js'",
   "devDependencies": {
+    "@types/bent": "^7.0.2",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
+    "@types/pino": "^6.0.1",
     "@types/request": "^2.48.5",
+    "bent": "^7.3.2",
     "chai": "^4.2.0",
     "dotenv": "^8.2.0",
     "mocha": "^6.2.3",
+    "pino": "^6.3.1",
     "request": "^2.88.2",
     "supertest": "^4.0.2"
   }
