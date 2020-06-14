@@ -53,7 +53,7 @@ var logger = pino_1.default({
 var Particle = /** @class */ (function () {
     function Particle() {
         this.hostname = "https://api.particle.io/v1/devices";
-        this.token = process.env.TKNParticle || '3ca0e1c81acf44a9e44ff4436dd70fe012684071';
+        this.token = process.env.TKNParticle || '';
         this.authenticate();
     }
     Particle.prototype.authenticate = function () {
@@ -65,7 +65,7 @@ var Particle = /** @class */ (function () {
                     path: "/v1/devices?access_token=" + this.token,
                     timeout: 5000
                 };
-                req = https_1.default
+                req = https_1.default // does await need to be on this?
                     .get(options, function (res) {
                     var authResults = res.statusCode == 200
                         ? (authResults = 'success')
@@ -83,36 +83,36 @@ var Particle = /** @class */ (function () {
             });
         });
     };
-    Particle.prototype.getDevices = function () {
+    Particle.prototype.getAllDevices = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, getJSON, _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var url, getJSON;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         url = this.hostname + "/?access_token=" + this.token;
                         getJSON = bent_1.default('json');
-                        _b = (_a = console).log;
-                        return [4 /*yield*/, getJSON("" + url)];
-                    case 1:
-                        _b.apply(_a, [_c.sent()]);
-                        return [4 /*yield*/, getJSON("" + url)];
-                    case 2: return [2 /*return*/, _c.sent()];
+                        return [4 /*yield*/, getJSON("" + url).then(function (res) {
+                                logger.trace('[services/Particle] %O', res);
+                                return res;
+                            })];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    Particle.prototype.getDeviceIP = function (id) {
+    Particle.prototype.getDeviceById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var url, getJSON, json;
+            var url, getJSON;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = this.hostname + "/" + id + "/?access_token=" + this.token;
                         getJSON = bent_1.default('json');
-                        return [4 /*yield*/, getJSON(url)];
-                    case 1:
-                        json = _a.sent();
-                        return [2 /*return*/, json[0].last_ip_address];
+                        return [4 /*yield*/, getJSON(url).then(function (res) {
+                                logger.trace('[services/Particle] %O', res);
+                                return res[0];
+                            })];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });

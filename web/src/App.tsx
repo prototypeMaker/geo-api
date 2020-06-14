@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { GeoLocationMap } from './GeoLocationMap';
 
 class App extends React.Component {
+  intervalID: any;
+
   state = {
     items: {
       latitude: 0,
@@ -12,31 +14,26 @@ class App extends React.Component {
     error: ''
   };
 
-  private async fetchLocation() {
-    let response = await fetch('http://localhost:4202/');
-
-    return await response.json();
+  componentDidMount() {
+    this.getData();
   }
 
-  async componentDidMount() {
-    // setInterval(
-    this.fetchLocation().then(
-      result => {
-        this.setState({
-          isLoaded: true,
-          items: result.items
-        });
-      },
-      error => {
-        this.setState({
-          isLoaded: true,
-          error
-        });
-      }
-    );
-    //   5000
-    // );
+  componentWillUnmount() {
+    clearTimeout(this.intervalID);
   }
+
+  getData = () => {
+    fetch('http://localhost:4202/')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          isLoaded: true,
+          items: data.items
+        });
+
+        this.intervalID = setTimeout(this.getData.bind(this), 15000);
+      });
+  };
 
   render() {
     return (
