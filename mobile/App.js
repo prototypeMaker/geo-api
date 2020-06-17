@@ -21,15 +21,15 @@ export default function App() {
         </Right>
       </Header>
 
-        {/* <MapView style={styles.container}
+        <MapView style={styles.container}
         InitialRegion={{
       latitude: 37.78825,
       longitude: -122.4324,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     }}>
-        </MapView> */}
-        <Marker coordinate={marker.latlng}></Marker>
+        {/* <Marker coordinate={marker.latlng}></Marker> */}
+        </MapView>
 
       <Footer >
         <FooterTab>
