@@ -1,6 +1,6 @@
 import express from 'express';
 import pino from 'pino';
-import { GeoLocation } from './Geolocation';
+import { GeoLocation, Location } from './Geolocation';
 import { Particle } from './Particle';
 
 const app = express();
@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
 
       geoLocation.deviceIp = last_ip_address;
 
-      const location = {
+      const location: Location = {
         latitude: geoLocation.location.longitude,
         longitude: geoLocation.location.latitude
       };
@@ -78,13 +78,5 @@ module.exports = app;
 
 interface Device {
   id: string;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
+  location: Location;
 }
-
-// Reference
-// https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
-
-// Rewritten in the OOJS style

@@ -123,3 +123,8 @@ export class GeoLocation {
     req.end();
   };
 }
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+}

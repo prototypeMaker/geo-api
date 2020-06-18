@@ -58,6 +58,3 @@ process.on('uncaughtException', function (e) {
     process.exit(1);
 });
 module.exports = app;
-// Reference
-// https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
-// Rewritten in the OOJS style
