@@ -1,6 +1,6 @@
 import express from 'express';
 import pino from 'pino';
-import { GeoLocation } from './Geolocation';
+import { GeoLocation, Location } from './Geolocation';
 import { Particle } from './Particle';
 
 const app = express();
@@ -13,6 +13,9 @@ const logger = pino({
     ignore: 'pid,hostname'
   }
 });
+
+const geoLocation = new GeoLocation();
+const particle = new Particle();
 
 const port = process.env.PORT || 4202;
 const host =
@@ -33,16 +36,37 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  const response = {
-    items: {
-      latitude: 36.214151845703125,
-      longitude: -81.67890930175781
-    }
-  };
+  const devices = particle.getAllDevices().then(response => response);
+
+  const deviceLocations: Promise<Device[]> = devices.then(response => {
+    let devices: Device[] = [];
+
+    response.forEach((element: any) => {
+      const { id, last_ip_address } = element;
+
+      geoLocation.deviceIp = last_ip_address;
+
+      const location: Location = {
+        latitude: geoLocation.location.longitude,
+        longitude: geoLocation.location.latitude
+      };
+
+      devices.push({
+        id,
+        location
+      });
+    });
+
+    return devices;
+  });
 
   logger.debug(`[app] GET ${req.path}`);
 
-  res.send(JSON.stringify(response));
+  deviceLocations.then(locations => {
+    const body = { items: locations[0].location };
+
+    res.send(JSON.stringify(body)); // works for one device for now
+  });
 });
 
 process.on('uncaughtException', e => {
@@ -52,7 +76,7 @@ process.on('uncaughtException', e => {
 
 module.exports = app;
 
-// Reference
-// https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
-
-// Rewritten in the OOJS style
+interface Device {
+  id: string;
+  location: Location;
+}

@@ -20,7 +20,7 @@ matrix:
       before_script:
         - cd web
       script:
-        - npm install && npm run test
+        - npm install
       git:
         quiet: true
     # here will be another build for mobile

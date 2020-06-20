@@ -12,7 +12,7 @@ const logger = pino({
 
 export class GeoLocation {
   private token: string | undefined = '';
-  private ip: string | undefined;
+  private ip: string | undefined = '';
   private geoIp: any = null;
 
   /**
@@ -20,21 +20,37 @@ export class GeoLocation {
    * @param {string} ip - The IP address of the given device
    * @param {string} token - The bearer token for authorization
    */
-  constructor(ip?: string, token?: string) {
-    this.token = process.env.IPSTACK_ACCESSKEY;
+  constructor(ip?: string) {
+    this.token = process.env.IPSTACK_ACCESSKEY || '';
 
     this.ip = ip || `66.115.169.224`; //test IP
 
     this.updateLocation();
   }
 
-  getLat(): number {
-    logger.debug(`Getting ${this.ip}'s latitude: ${this.geoIp.latitude}`);
+  get location(): { latitude: number; longitude: number } {
+    const x = {
+      latitude: 0,
+      longitude: 0
+    };
+
+    x.latitude = this.latitude;
+    x.longitude = this.longitude;
+
+    return x;
+  }
+
+  get latitude(): number {
+    logger.trace(
+      `[services/Geolocation]: Getting ${this.ip}'s latitude: ${this.geoIp.latitude}`
+    );
     return this.geoIp.latitude;
   }
 
-  getLong(): number {
-    logger.debug(`Getting ${this.ip}'s longitude: ${this.geoIp.longitude}`);
+  get longitude(): number {
+    logger.trace(
+      `[services/Geolocation]: Getting ${this.ip}'s longitude: ${this.geoIp.longitude}`
+    );
     return this.geoIp.longitude;
   }
 
@@ -42,8 +58,21 @@ export class GeoLocation {
     this.geoIp = newValue;
   }
 
-  getGeoIp(): number {
+  set geoLocation(ip: string) {
+    this.ip = ip;
+    this.updateLocation();
+  }
+
+  get geoLocation(): string {
     return this.geoIp;
+  }
+
+  /**
+   * Assigns the GeoLocation api a new IP and updates the location
+   */
+  set deviceIp(ip: string) {
+    this.ip = ip;
+    this.updateLocation();
   }
 
   /**
@@ -59,7 +88,7 @@ export class GeoLocation {
       agent: false
     };
 
-    const req = http.get(options, res => {
+    const req = await http.get(options, res => {
       res.on('data', data => {
         const parsed = JSON.parse(data);
 
@@ -88,9 +117,14 @@ export class GeoLocation {
     });
 
     req.on('error', e => {
-      logger.error(`[server/Geolocation] ${e}`);
+      logger.error(`[server/Geolocation] %O`, e);
     });
 
     req.end();
   };
+}
+
+export interface Location {
+  latitude: number;
+  longitude: number;
 }

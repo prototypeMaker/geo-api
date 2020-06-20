@@ -10,15 +10,9 @@ var port = process.env.PORT || 4202;
 var url = host + ":" + port;
 describe('GET /', function () {
     it('should return coordinates', function (done) {
-        var response = {
-            items: {
-                latitude: 36.214151845703125,
-                longitude: -81.67890930175781
-            }
-        };
-        var stringy = JSON.stringify(response);
         request_1.default(url, function (error, response, body) {
-            chai_1.default.expect(body).to.equal(stringy);
+            chai_1.default.expect(body).to.not.be.null;
+            chai_1.default.expect(error).to.be.null;
             done();
         });
     });

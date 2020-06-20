@@ -50,6 +50,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "dot-env": "0.0.1",
     "jest": "^26.0.1",
     "parcel-bundler": "^1.12.4",
     "supertest": "^4.0.2"

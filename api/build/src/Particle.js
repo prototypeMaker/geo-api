@@ -73,29 +73,29 @@ var logger = pino_1.default({
     }
 });
 var Particle = /** @class */ (function () {
-    function Particle(_$deviceID) {
+    function Particle() {
+        this.hostname = "https://api.particle.io/v1/devices";
         this.token = process.env.TKNParticle || '';
-        this.getJSON = bent_1.default('json');
-        var hostname = "https://api.particle.io/v1/devices";
-        this.authenticate(hostname);
-        this.devices(hostname);
+        this.authenticate();
     }
-    Particle.prototype.authenticate = function (hostname) {
+    Particle.prototype.authenticate = function () {
         return __awaiter(this, void 0, void 0, function () {
             var options, req;
             return __generator(this, function (_a) {
-                options = hostname + "?access_token=" + this.token;
-                req = https_1.default
+                options = {
+                    hostname: 'api.particle.io',
+                    path: "/v1/devices?access_token=" + this.token,
+                    timeout: 5000
+                };
+                req = https_1.default // does await need to be on this?
                     .get(options, function (res) {
                     var authResults = res.statusCode == 200
                         ? (authResults = 'success')
                         : (authResults = 'failed');
                     logger.debug("[services/Particle] " + res.statusCode + ": " + res.statusMessage);
-                    logger.trace("[services/Particle] " + res.toString());
                 })
                     .on('error', function (error) {
-                    logger.debug("[services/Particle] " + error.name + ": " + error.message);
-                    logger.trace("[services/Particle] " + error.toString());
+                    logger.error("[services/Particle] " + error.name + ": " + error.message);
                 });
                 req.on('error', function (e) {
                     logger.error("[server/Particle] " + e);
@@ -105,27 +105,35 @@ var Particle = /** @class */ (function () {
             });
         });
     };
-    Particle.prototype.devices = function (hostname) {
+    Particle.prototype.getAllDevices = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url;
+            var url, getJSON;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = hostname + "/?access_token=" + this.token;
-                        return [4 /*yield*/, this.getJSON("" + url)];
+                        url = this.hostname + "/?access_token=" + this.token;
+                        getJSON = bent_1.default('json');
+                        return [4 /*yield*/, getJSON("" + url).then(function (res) {
+                                logger.trace('[services/Particle] %O', res);
+                                return res;
+                            })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    Particle.prototype.deviceIP = function (hostname, $id) {
+    Particle.prototype.getDeviceById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var url;
+            var url, getJSON;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = hostname + "/" + $id + "/?access_token=" + this.token;
-                        return [4 /*yield*/, this.getJSON(url)[0].last_ip_address];
+                        url = this.hostname + "/" + id + "/?access_token=" + this.token;
+                        getJSON = bent_1.default('json');
+                        return [4 /*yield*/, getJSON(url).then(function (res) {
+                                logger.trace('[services/Particle] %O', res);
+                                return res[0];
+                            })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

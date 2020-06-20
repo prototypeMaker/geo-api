@@ -28,7 +28,7 @@ export class GeoLocationMap extends React.Component<Props> {
     return (
       <div>
         <GoogleMapExample
-          containerElement={<div style={{ height: `500px`, width: '500px' }} />}
+          containerElement={<div style={{ height: `700px` }} />}
           mapElement={<div style={{ height: `100%` }} />}
         />
       </div>
