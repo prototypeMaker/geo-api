@@ -1,50 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { GeoLocationMap } from './GeoLocationMap';
 import './App.css';
 
-export class Home extends React.Component {
-  intervalID: any;
+export function Home() {
+  const [doFetch, setDoFetch] = useState(true);
+  const [items, setItems] = useState({ latitude: 0, longitude: 0 });
+  const [error, setError] = useState('');
 
-  state = {
-    items: {
-      latitude: 0,
-      longitude: 0
-    },
-    isLoaded: false,
-    error: ''
-  };
-
-  componentDidMount() {
-    this.getData();
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.intervalID);
-  }
-
-  getData = () => {
-    fetch('http://localhost:4202/')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          isLoaded: true,
-          items: data.items
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch('http://localhost:4202/')
+        .then(response => response.json())
+        .then(data => {
+          setItems(data.items);
         });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-        this.intervalID = setTimeout(this.getData.bind(this), 5000);
-      });
-  };
-
-  render() {
-    return (
-      <div>
-        {this.state.error ? (
-          this.state.error
-        ) : (
-          <GeoLocationMap coordinates={this.state.items}></GeoLocationMap>
-        )}
-      </div>
-    );
-  }
+  return (
+    <div>
+      {error ? error : <GeoLocationMap coordinates={items}></GeoLocationMap>}
+    </div>
+  );
 }
