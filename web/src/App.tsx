@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { GeoLocationMap } from './GeoLocationMap';
 import { Home } from './Home';
 
 class App extends React.Component {

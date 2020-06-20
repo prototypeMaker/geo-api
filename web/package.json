@@ -4,7 +4,7 @@
   "description": "simple geo-tracker server for IoT Systems",
   "main": "index.js",
   "scripts": {
-    "start": "parcel  -r dotenv/config index.html",
+    "start": "parcel index.html",
     "build": "parcel build index.html",
     "test": "NODE_ENV=test mocha './*/*.spec.js'"
   },
