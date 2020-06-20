@@ -2,13 +2,18 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import MapView from 'react-native-maps';
 import Marker from 'react-native-maps';
-const Geolocation = require('../../api/src/Geolocation')
+import { Geolocation } from '../../api/src/Geolocation'
+import { Particle } from '../../api/src/Particle'
 
 export default class MiddleSection extends React.Component {
   state = { latitude: 0.00, longitude: 0.00 }
   componentDidMount()
   {
-    Geolocation();
+    const devices = new Particle();
+    const location = new Geolocation(devices.deviceIP());
+    location.then(
+      this.setState({ latitude: location.getLat(), longitude: location.getLong()})
+    );
   }  
   
   render()
@@ -16,8 +21,8 @@ export default class MiddleSection extends React.Component {
       return <>
           <MapView style={styles.container}
           InitialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: this.state.latitude,
+          longitude: this.state.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
           }}>    
