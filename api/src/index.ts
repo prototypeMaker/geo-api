@@ -35,38 +35,40 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => {
-  const devices = particle.getAllDevices().then(response => response);
+app.get('/marashusbandisamazingandalsonameddonaldgatto', (req, res) => {
+  res.send('hello world!');
 
-  const deviceLocations: Promise<Device[]> = devices.then(response => {
-    let devices: Device[] = [];
+  // const devices = particle.getAllDevices().then(response => response);
 
-    response.forEach((element: any) => {
-      const { id, last_ip_address } = element;
+  // const deviceLocations: Promise<Device[]> = devices.then(response => {
+  //   let devices: Device[] = [];
 
-      geoLocation.deviceIp = last_ip_address;
+  //   response.forEach((element: any) => {
+  //     const { id, last_ip_address } = element;
 
-      const location: Location = {
-        latitude: geoLocation.location.longitude,
-        longitude: geoLocation.location.latitude
-      };
+  //     geoLocation.deviceIp = last_ip_address;
 
-      devices.push({
-        id,
-        location
-      });
-    });
+  //     const location: Location = {
+  //       latitude: geoLocation.location.longitude,
+  //       longitude: geoLocation.location.latitude
+  //     };
 
-    return devices;
-  });
+  //     devices.push({
+  //       id,
+  //       location
+  //     });
+  //   });
 
-  logger.debug(`[app] GET ${req.path}`);
+  //   return devices;
+  // });
 
-  deviceLocations.then(locations => {
-    const body = { items: locations[0].location };
+  // logger.debug(`[app] GET ${req.path}`);
 
-    res.send(JSON.stringify(body)); // works for one device for now
-  });
+  // deviceLocations.then(locations => {
+  //   const body = { items: locations[0].location };
+
+  //   res.send(JSON.stringify(body)); // works for one device for now
+  // });
 });
 
 process.on('uncaughtException', e => {
