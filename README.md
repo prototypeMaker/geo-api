@@ -1,6 +1,6 @@
 # IoT Location Application
 
-[![Build Status](https://travis-ci.com/IoTresor/geo-api.svg?branch=master)](https://travis-ci.com/IoTresor/geo-api)
+[![Build Status](https://travis-ci.com/IoTresor/geo-api.svg?branch=qa)](https://travis-ci.com/IoTresor/geo-api)
 
 [![Mergify Status][mergify-status]][mergify]
 
